@@ -1,4 +1,15 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase -- Legacy filename.
+/**
+ * File: version_check.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
+/**
+ * Get version information.
+ */
 function umami_connect_get_version_info() {
 	$main_plugin_file = dirname( __DIR__, 2 ) . '/umami-connect.php';
 
@@ -15,7 +26,7 @@ function umami_connect_get_version_info() {
 
 	$latest_release = get_transient( 'umami_connect_latest_release' );
 
-	if ( $latest_release === false ) {
+	if ( false === $latest_release ) {
 		$github_api_url = 'https://api.github.com/repos/' . UMAMI_CONNECT_GITHUB_USER . '/' . UMAMI_CONNECT_GITHUB_REPO . '/releases/latest';
 		$args           = array(
 			'headers' => array(
@@ -27,15 +38,15 @@ function umami_connect_get_version_info() {
 
 		$response = wp_remote_get( $github_api_url, $args );
 
-		if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && $response['response']['code'] === 200 ) {
+		if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && 200 === $response['response']['code'] ) {
 			$body = json_decode( wp_remote_retrieve_body( $response ), true );
 			if ( ! empty( $body['tag_name'] ) ) {
 				$latest_release = esc_html( $body['tag_name'] );
 			}
-		} elseif ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && $response['response']['code'] === 404 ) {
+		} elseif ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && 404 === $response['response']['code'] ) {
 			$releases_url = 'https://api.github.com/repos/' . UMAMI_CONNECT_GITHUB_USER . '/' . UMAMI_CONNECT_GITHUB_REPO . '/releases';
 			$response2    = wp_remote_get( $releases_url, $args );
-			if ( ! is_wp_error( $response2 ) && isset( $response2['response']['code'] ) && $response2['response']['code'] === 200 ) {
+			if ( ! is_wp_error( $response2 ) && isset( $response2['response']['code'] ) && 200 === $response2['response']['code'] ) {
 				$body2 = json_decode( wp_remote_retrieve_body( $response2 ), true );
 				if ( is_array( $body2 ) && ! empty( $body2[0]['tag_name'] ) ) {
 					$latest_release = esc_html( $body2[0]['tag_name'] );
@@ -43,7 +54,7 @@ function umami_connect_get_version_info() {
 			}
 		}
 
-		if ( $latest_release && $latest_release !== '–' ) {
+		if ( $latest_release && '–' !== $latest_release ) {
 			set_transient( 'umami_connect_latest_release', $latest_release, 6 * HOUR_IN_SECONDS );
 		}
 	}
@@ -55,15 +66,24 @@ function umami_connect_get_version_info() {
 	);
 }
 
+/**
+ * Umami Connect Version Compare.
+ *
+ * @param string $v1 Version 1.
+ * @param string $v2 Version 2.
+ */
 function umami_connect_version_compare( $v1, $v2 ) {
 	$v1 = trim( ltrim( $v1, 'vV' ) );
 	$v2 = trim( ltrim( $v2, 'vV' ) );
 	return version_compare( $v1, $v2 );
 }
 
+/**
+ * Umami Connect Has Update.
+ */
 function umami_connect_has_update() {
 	$info = umami_connect_get_version_info();
-	if ( $info['latest'] === '–' ) {
+	if ( '–' === $info['latest'] ) {
 		return false;
 	}
 	return umami_connect_version_compare( $info['current'], $info['latest'] ) === -1;

@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: menu.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 add_action(
 	'admin_menu',
 	function () {
@@ -76,6 +84,7 @@ add_action(
 add_action(
 	'admin_init',
 	function () {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Simple redirect based on page parameter.
 		if ( isset( $_GET['page'] ) && sanitize_key( wp_unslash( $_GET['page'] ) ) === 'umami_connect_support' ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=umami_connect_update' ), 301 );
 			exit;
@@ -83,6 +92,9 @@ add_action(
 	}
 );
 
+/**
+ * Add help tabs to the main settings page.
+ */
 function umami_connect_add_help() {
 	$screen = get_current_screen();
 
@@ -124,6 +136,9 @@ function umami_connect_add_help() {
 	);
 }
 
+/**
+ * Umami Connect Add Help Self Protection.
+ */
 function umami_connect_add_help_self_protection() {
 	$screen = get_current_screen();
 
@@ -155,6 +170,9 @@ function umami_connect_add_help_self_protection() {
 	);
 }
 
+/**
+ * Umami Connect Add Help Automation.
+ */
 function umami_connect_add_help_automation() {
 	$screen = get_current_screen();
 
@@ -190,6 +208,9 @@ function umami_connect_add_help_automation() {
 	);
 }
 
+/**
+ * Umami Connect Add Help Events Overview.
+ */
 function umami_connect_add_help_events_overview() {
 	$screen = get_current_screen();
 
@@ -256,6 +277,9 @@ function umami_connect_add_help_events_overview() {
 	);
 }
 
+/**
+ * Umami Connect Add Help Update.
+ */
 function umami_connect_add_help_update() {
 	$screen = get_current_screen();
 
@@ -292,6 +316,9 @@ function umami_connect_add_help_update() {
 	);
 }
 
+/**
+ * Umami Connect Add Help Advanced.
+ */
 function umami_connect_add_help_advanced() {
 	$screen = get_current_screen();
 
@@ -416,7 +443,7 @@ function umami_connect_add_help_advanced() {
 function umami_connect_add_screen_options_events_overview() {
 	$screen = get_current_screen();
 
-	if ( ! $screen || $screen->id !== 'umami-connect_page_umami_connect_events_overview' ) {
+	if ( ! $screen || 'umami-connect_page_umami_connect_events_overview' !== $screen->id ) {
 		return;
 	}
 
@@ -436,8 +463,11 @@ function umami_connect_add_screen_options_events_overview() {
 
 /**
  * Define available columns for Events Overview
+ *
+ * @param array $columns The columns array.
+ * @return array
  */
-function umami_connect_events_overview_columns( $columns ) {
+function umami_connect_events_overview_columns( $columns ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- WordPress filter signature.
 	return array(
 		'event'      => __( 'Event', 'umami-connect' ),
 		'post'       => __( 'Post/Page', 'umami-connect' ),
@@ -449,6 +479,11 @@ function umami_connect_events_overview_columns( $columns ) {
 
 /**
  * Handle screen option saving
+ *
+ * @param mixed  $status The status.
+ * @param string $option The option name.
+ * @param mixed  $value  The option value.
+ * @return mixed
  */
 function umami_connect_set_screen_option( $status, $option, $value ) {
 	if ( 'events_per_page' === $option ) {

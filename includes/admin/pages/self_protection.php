@@ -1,4 +1,15 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase -- Legacy filename.
+/**
+ * File: self_protection.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
+/**
+ * Render the self protection settings page.
+ */
 function umami_connect_self_protection_page() {
 	?>
 	<div class="wrap">

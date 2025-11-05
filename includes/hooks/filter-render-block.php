@@ -1,4 +1,13 @@
 <?php
+/**
+ * File: filter-render-block.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ * phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOM API properties use camelCase.
+ */
+
 add_filter(
 	'render_block',
 	function ( $block_content, $block ) {
@@ -18,7 +27,7 @@ add_filter(
 			}
 		}
 
-		if ( $block['blockName'] === 'core/button' ) {
+		if ( 'core/button' === $block['blockName'] ) {
 			if ( ! $event && empty( $data_keys ) ) {
 				return $block_content;
 			}
@@ -33,7 +42,7 @@ add_filter(
 					} elseif ( preg_match( '/href\s*=\s*([^\s>]+)/i', $m[2], $hm2 ) ) {
 						$href_val = trim( $hm2[1] );
 					}
-					$has_valid_href = ( is_string( $href_val ) && $href_val !== '' );
+					$has_valid_href = ( is_string( $href_val ) && '' !== $href_val );
 
 					if ( $event ) {
 						$attr .= ' data-umami-event="' . esc_attr( $event ) . '"';
@@ -51,7 +60,7 @@ add_filter(
 			return $block_content;
 		}
 
-		$supports_link_events = in_array( $block['blockName'], array( 'core/paragraph', 'core/heading', 'core/post-excerpt', 'core/quote', 'core/pullquote', 'core/list', 'core/list-item', 'core/columns', 'core/cover', 'core/group' ), true );
+		$supports_link_events = in_array( $block['blockName'], array( 'core/paragraph', 'core/heading', 'core/post-excerpt', 'core/quote', 'core/pullquote', 'core/list', 'core/list-item', 'core/columns', 'core/cover', 'core/group', true ), true );
 		$link_events          = isset( $attrs['umamiLinkEvents'] ) && is_array( $attrs['umamiLinkEvents'] ) ? $attrs['umamiLinkEvents'] : array();
 
 		if ( ! $supports_link_events && ! $event && empty( $data_keys ) ) {
@@ -100,7 +109,7 @@ add_filter(
 						foreach ( $link_events as $ev ) {
 							$ev_url  = isset( $ev['linkUrl'] ) ? (string) $ev['linkUrl'] : '';
 							$ev_text = $norm( isset( $ev['linkText'] ) ? (string) $ev['linkText'] : '' );
-							if ( $ev_url !== '' && $href !== '' && $href === $ev_url && $ev_text !== '' && $text === $ev_text ) {
+							if ( '' !== $ev_url && '' !== $href && $href === $ev_url && '' !== $ev_text && $text === $ev_text ) {
 								$matched = $ev;
 								break;
 							}
@@ -109,7 +118,7 @@ add_filter(
 
 					if ( ! $matched && ! empty( $link_events ) ) {
 						$href = $a->hasAttribute( 'href' ) ? $a->getAttribute( 'href' ) : '';
-						if ( $href !== '' ) {
+						if ( '' !== $href ) {
 								$candidates = array_values(
 									array_filter(
 										$link_events,

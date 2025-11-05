@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: wp-head-before-send-check.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -9,6 +17,7 @@ add_action(
 		if ( is_admin() ) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Diagnostic feature flag check only.
 		if ( ! isset( $_GET['umami_check_before_send'] ) ) {
 			return;
 		}

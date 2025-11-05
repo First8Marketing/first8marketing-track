@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: admin-init-settings.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -13,7 +21,7 @@ add_action(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $value ) {
 					$value = trim( (string) $value );
-					if ( $value === '' ) {
+					if ( '' === $value ) {
 						return '';
 					}
 					if ( ! preg_match( '~^https?://~i', $value ) ) {
@@ -90,7 +98,7 @@ add_action(
 			array(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $value ) {
-					return in_array( $value, array( 'disabled', 'function_name', 'inline' ), true ) ? $value : 'disabled';
+					return in_array( $value, array( 'disabled', 'function_name', 'inline', true ), true ) ? $value : 'disabled';
 				},
 				'default'           => 'disabled',
 			)
@@ -102,7 +110,7 @@ add_action(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $value ) {
 					$value = trim( (string) $value );
-					if ( $value === '' ) {
+					if ( '' === $value ) {
 						return '';
 					}
 					return preg_match( '/^[A-Za-z_$][A-Za-z0-9_$.]*$/', $value ) ? $value : '';
@@ -117,7 +125,7 @@ add_action(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $value ) {
 					$value = trim( (string) $value );
-					if ( $value === '' ) {
+					if ( '' === $value ) {
 						return '';
 					}
 					$value = preg_replace( '/<\/?script[^>]*>/i', '', $value );
@@ -144,7 +152,7 @@ add_action(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $v ) {
 					$v = strtolower( trim( (string) $v ) );
-					return in_array( $v, array( 'async', 'defer' ), true ) ? $v : 'async';
+					return in_array( $v, array( 'async', 'defer', true ), true ) ? $v : 'async';
 				},
 				'default'           => 'async',
 			)
@@ -157,7 +165,7 @@ add_action(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $v ) {
 					$v = strtolower( trim( (string) $v ) );
-					return in_array( $v, array( 'cloud', 'self' ), true ) ? $v : 'cloud';
+					return in_array( $v, array( 'cloud', 'self', true ), true ) ? $v : 'cloud';
 				},
 				'default'           => 'cloud',
 			)
@@ -172,7 +180,7 @@ add_action(
 					$mode  = get_option( 'umami_mode', 'cloud' );
 					$value = trim( (string) $value );
 
-					if ( $mode === 'self' && $value === '' ) {
+					if ( 'self' === $mode && '' === $value ) {
 						add_settings_error(
 							'umami_host',
 							'umami_host_required',
@@ -182,7 +190,7 @@ add_action(
 						return get_option( 'umami_host', '' );
 					}
 
-					if ( $value === '' ) {
+					if ( '' === $value ) {
 						return '';
 					}
 
@@ -204,7 +212,7 @@ add_action(
 				'sanitize_callback' => function ( $value ) {
 					$value = trim( (string) $value );
 
-					if ( $value === '' ) {
+					if ( '' === $value ) {
 						add_settings_error(
 							'umami_website_id',
 							'umami_website_id_required',
@@ -285,7 +293,7 @@ add_action(
 				'type'              => 'string',
 				'sanitize_callback' => function ( $value ) {
 					$value = trim( (string) $value );
-					if ( $value === '' ) {
+					if ( '' === $value ) {
 						return 'umamiConsentGranted';
 					}
 					return preg_match( '/^[A-Za-z_$][A-Za-z0-9_$.]*$/', $value ) ? $value : 'umamiConsentGranted';
@@ -418,6 +426,8 @@ add_action(
 			'umami_connect_automation',
 			'umami_connect_automation'
 		);
+
+		// phpcs:disable Squiz.PHP.CommentedOutCode.Found,WordPress.WhiteSpace.PrecisionAlignment.Found -- Planned feature.
 
 		/*
 		 * Commented out - Future features for consent management and debugging.

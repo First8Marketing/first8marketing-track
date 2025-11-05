@@ -1,10 +1,24 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase -- Legacy filename.
+/**
+ * File: events_overview.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ * phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table queries required.
+ * phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Real-time data display.
+ * phpcs:disable WordPress.Security.NonceVerification.Recommended -- Admin page with GET parameters.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 define( 'UMAMI_CONNECT_MAX_BLOCK_NESTING_DEPTH', 15 );
 
+/**
+ * Render the events overview page.
+ */
 function umami_connect_render_events_overview_page() {
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'umami-connect' ) );
@@ -19,7 +33,7 @@ function umami_connect_render_events_overview_page() {
 			echo '<div class="notice notice-error is-dismissible"><p><strong>Error: Invalid post ID.</strong></p></div>';
 		} elseif ( empty( $block_index ) || ! is_string( $block_index ) ) {
 			echo '<div class="notice notice-error is-dismissible"><p><strong>Error: Invalid block index.</strong></p></div>';
-		} elseif ( ! in_array( $event_type, array( 'button', 'link' ), true ) ) {
+		} elseif ( ! in_array( $event_type, array( 'button', 'link', true ), true ) ) {
 			echo '<div class="notice notice-error is-dismissible"><p><strong>Error: Invalid event type.</strong></p></div>';
 		} else {
 
@@ -37,14 +51,14 @@ function umami_connect_render_events_overview_page() {
         <h3>Event overview</h3>';
 	echo '<p>Overview of all configured tracking events. Use "Edit Page/Post" to manage events in Gutenberg.</p>';
 
-	$screen = get_current_screen();
+	$screen   = get_current_screen();
 	$per_page = get_user_meta( get_current_user_id(), 'events_per_page', true );
 	if ( empty( $per_page ) || $per_page < 1 ) {
 		$per_page = $screen->get_option( 'per_page', 'default' );
 	}
 
 	$hidden_columns = get_hidden_columns( $screen );
-	$columns = umami_connect_events_overview_columns( array() );
+	$columns        = umami_connect_events_overview_columns( array() );
 
 	$events = apply_filters( 'umami_connect_get_all_events', array(), $per_page );
 
@@ -60,21 +74,21 @@ function umami_connect_render_events_overview_page() {
 		}
 	}
 
-	$current_filter = isset( $_GET['filter'] ) ? sanitize_key( wp_unslash( $_GET['filter'] ) ) : 'all';
+	$current_filter  = isset( $_GET['filter'] ) ? sanitize_key( wp_unslash( $_GET['filter'] ) ) : 'all';
 	$original_filter = $current_filter;
 	$filter_switched = false;
 
-	if ( $current_filter === 'events' && $events_count === 0 ) {
+	if ( 'events' === $current_filter && 0 === $events_count ) {
 		$current_filter  = 'all';
-		$filter_switched = ( $original_filter === 'events' );
+		$filter_switched = ( 'events' === $original_filter );
 	}
-	if ( $current_filter === 'candidates' && $candidates_count === 0 ) {
+	if ( 'candidates' === $current_filter && 0 === $candidates_count ) {
 		$current_filter  = 'all';
-		$filter_switched = ( $original_filter === 'candidates' );
+		$filter_switched = ( 'candidates' === $original_filter );
 	}
 
 	if ( $filter_switched ) {
-		$switched_from = $original_filter === 'events' ? 'Events' : 'Candidates';
+		$switched_from = 'events' === $original_filter ? 'Events' : 'Candidates';
 		echo '<div class="notice notice-warning is-dismissible" style="margin:15px 0;">';
 		echo '<p><strong>Filter switched to "All":</strong> The "' . esc_html( $switched_from ) . '" filter shows no results, so all items are displayed instead.</p>';
 		echo '</div>';
@@ -93,9 +107,9 @@ function umami_connect_render_events_overview_page() {
 
 		echo '<ul class="subsubsub" style="margin: 0;">';
 
-		$all_class = $current_filter === 'all' ? 'current' : '';
+		$all_class = 'all' === $current_filter ? 'current' : '';
 		$all_url   = remove_query_arg( array( 'filter', 'paged' ) );
-		echo '<li class="all"><a href="' . esc_url( $all_url ) . '" class="' . esc_attr( $all_class ) . '">All <span class="count">(' . $all_count . ')</span></a>';
+		echo '<li class="all"><a href="' . esc_url( $all_url ) . '" class="' . esc_attr( $all_class ) . '">All <span class="count">(' . esc_html( $all_count ) . ')</span></a>';
 
 		if ( $events_count > 0 || $candidates_count > 0 ) {
 			echo ' | ';
@@ -103,9 +117,9 @@ function umami_connect_render_events_overview_page() {
 		echo '</li>';
 
 		if ( $events_count > 0 ) {
-			$events_class = $current_filter === 'events' ? 'current' : '';
+			$events_class = 'events' === $current_filter ? 'current' : '';
 			$events_url   = add_query_arg( 'filter', 'events', remove_query_arg( 'paged' ) );
-			echo '<li class="events"><a href="' . esc_url( $events_url ) . '" class="' . esc_attr( $events_class ) . '">Events <span class="count">(' . $events_count . ')</span></a>';
+			echo '<li class="events"><a href="' . esc_url( $events_url ) . '" class="' . esc_attr( $events_class ) . '">Events <span class="count">(' . esc_html( $events_count ) . ')</span></a>';
 
 			if ( $candidates_count > 0 ) {
 				echo ' | ';
@@ -114,16 +128,16 @@ function umami_connect_render_events_overview_page() {
 		}
 
 		if ( $candidates_count > 0 ) {
-			$candidates_class = $current_filter === 'candidates' ? 'current' : '';
+			$candidates_class = 'candidates' === $current_filter ? 'current' : '';
 			$candidates_url   = add_query_arg( 'filter', 'candidates', remove_query_arg( 'paged' ) );
-			echo '<li class="candidates"><a href="' . esc_url( $candidates_url ) . '" class="' . esc_attr( $candidates_class ) . '">Candidates <span class="count">(' . $candidates_count . ')</span></a></li>';
+			echo '<li class="candidates"><a href="' . esc_url( $candidates_url ) . '" class="' . esc_attr( $candidates_class ) . '">Candidates <span class="count">(' . esc_html( $candidates_count ) . ')</span></a></li>';
 		}
 
 		echo '</ul>';
 
 		echo '<form method="get" style="margin: 0;">';
 		echo '<input type="hidden" name="page" value="umami_connect_events_overview">';
-		if ( $current_filter !== 'all' ) {
+		if ( 'all' !== $current_filter ) {
 			echo '<input type="hidden" name="filter" value="' . esc_attr( $current_filter ) . '">';
 		}
 		echo '<div class="search-box" style="display: flex; align-items: center; gap: 8px;">';
@@ -140,15 +154,15 @@ function umami_connect_render_events_overview_page() {
 
 		foreach ( $events as $row ) {
 			$rowtext = strtolower( $row['event'] . ' ' . $row['post_title'] . ' ' . $row['label'] );
-			if ( $search !== '' && strpos( $rowtext, $search ) === false ) {
+			if ( '' !== $search && strpos( $rowtext, $search ) === false ) {
 				continue;
 			}
 
 			$is_tracked = isset( $row['is_tracked'] ) ? $row['is_tracked'] : true;
-			if ( $current_filter === 'events' && ! $is_tracked ) {
+			if ( 'events' === $current_filter && ! $is_tracked ) {
 				continue;
 			}
-			if ( $current_filter === 'candidates' && $is_tracked ) {
+			if ( 'candidates' === $current_filter && $is_tracked ) {
 				continue;
 			}
 
@@ -160,7 +174,7 @@ function umami_connect_render_events_overview_page() {
 		usort(
 			$filtered,
 			function ( $a, $b ) use ( $orderby, $order ) {
-				if ( $orderby === 'block_type' ) {
+				if ( 'block_type' === $orderby ) {
 						$block_labels = array(
 							'core/button'       => 'Button',
 							'core/paragraph'    => 'Paragraph',
@@ -183,34 +197,44 @@ function umami_connect_render_events_overview_page() {
 				if ( $a_val === $b_val ) {
 					return 0;
 				}
-				if ( $order === 'desc' ) {
+				if ( 'desc' === $order ) {
 					return ( $a_val < $b_val ) ? 1 : -1;
 				}
 				return ( $a_val < $b_val ) ? -1 : 1;
 			}
 		);
+		/**
+		 * Generate a sortable column link.
+		 *
+		 * @param string $label Column label.
+		 * @param string $col   Column key.
+		 * @return string Escaped HTML for sortable link.
+		 */
 		function sort_link( $label, $col ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading GET params for display sorting only.
 			$current = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : 'event';
-			$order   = isset( $_GET['order'] ) ? sanitize_key( wp_unslash( $_GET['order'] ) ) : 'asc';
-			$order   = strtolower( $order );
-			$next    = ( $current === $col && $order === 'asc' ) ? 'desc' : 'asc';
-			$url     = add_query_arg(
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading GET params for display sorting only.
+			$order = isset( $_GET['order'] ) ? sanitize_key( wp_unslash( $_GET['order'] ) ) : 'asc';
+			$order = strtolower( $order );
+			$next  = ( $col === $current && 'asc' === $order ) ? 'desc' : 'asc';
+			$url   = add_query_arg(
 				array(
 					'orderby' => $col,
 					'order'   => $next,
 				)
 			);
-			$arrow   = ( $current === $col ) ? ( ' <span style="font-size:0.9em;">' . ( $order === 'asc' ? '▲' : '▼' ) . '</span>' ) : '';
+			$arrow = ( $col === $current ) ? ( ' <span style="font-size:0.9em;">' . ( 'asc' === $order ? '▲' : '▼' ) . '</span>' ) : '';
 			return '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . $arrow . '</a>';
 		}
 		echo '<table class="wp-list-table widefat fixed striped">';
 		echo '<thead><tr>';
 		foreach ( $columns as $column_key => $column_name ) {
-			if ( in_array( $column_key, $hidden_columns ) ) {
+			if ( in_array( $column_key, $hidden_columns, true ) ) {
 				continue;
 			}
-			if ( in_array( $column_key, array( 'event', 'post', 'block_type', 'label' ) ) ) {
-				$sort_key = $column_key === 'post' ? 'post_title' : $column_key;
+			if ( in_array( $column_key, array( 'event', 'post', 'block_type', 'label', true ), true ) ) {
+				$sort_key = 'post' === $column_key ? 'post_title' : $column_key;
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sort_link() returns escaped HTML.
 				echo '<th scope="col" class="manage-column column-' . esc_attr( $column_key ) . '">' . sort_link( $column_name, $sort_key ) . '</th>';
 			} else {
 				echo '<th scope="col" class="manage-column column-' . esc_attr( $column_key ) . '">' . esc_html( $column_name ) . '</th>';
@@ -219,11 +243,12 @@ function umami_connect_render_events_overview_page() {
 		echo '</tr></thead>';
 		echo '<tfoot><tr>';
 		foreach ( $columns as $column_key => $column_name ) {
-			if ( in_array( $column_key, $hidden_columns ) ) {
+			if ( in_array( $column_key, $hidden_columns, true ) ) {
 				continue;
 			}
-			if ( in_array( $column_key, array( 'event', 'post', 'block_type', 'label' ) ) ) {
-				$sort_key = $column_key === 'post' ? 'post_title' : $column_key;
+			if ( in_array( $column_key, array( 'event', 'post', 'block_type', 'label', true ), true ) ) {
+				$sort_key = 'post' === $column_key ? 'post_title' : $column_key;
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sort_link() returns escaped HTML.
 				echo '<th scope="col" class="manage-column column-' . esc_attr( $column_key ) . '">' . sort_link( $column_name, $sort_key ) . '</th>';
 			} else {
 				echo '<th scope="col" class="manage-column column-' . esc_attr( $column_key ) . '">' . esc_html( $column_name ) . '</th>';
@@ -254,7 +279,7 @@ function umami_connect_render_events_overview_page() {
 
 			echo '<tr>';
 
-			if ( ! in_array( 'event', $hidden_columns ) ) {
+			if ( ! in_array( 'event', $hidden_columns, true ) ) {
 				echo '<td class="title column-title has-row-actions column-primary">';
 
 				if ( $is_tracked ) {
@@ -266,7 +291,7 @@ function umami_connect_render_events_overview_page() {
 				if ( $block_index ) {
 					echo '<div class="row-actions">';
 
-					if ( $post_type === 'page' ) {
+					if ( 'page' === $post_type ) {
 						$edit_label = 'Edit Page';
 					} else {
 						$edit_label = 'Edit Post';
@@ -274,7 +299,7 @@ function umami_connect_render_events_overview_page() {
 					echo '<span class="edit">';
 					echo '<a href="' . esc_url( get_edit_post_link( $row['post_id'] ) ) . '" target="_blank">' . esc_html( $edit_label ) . '</a>';
 
-					if ( $is_tracked && $event_type !== 'none' ) {
+					if ( $is_tracked && 'none' !== $event_type ) {
 						echo ' | </span>';
 						echo '<span class="trash">';
 						echo '<a href="#" class="delete-event submitdelete" data-post-id="' . esc_attr( $row['post_id'] ) . '" data-block-index="' . esc_attr( $block_index ) . '" data-event-type="' . esc_attr( $event_type ) . '" style="color:#b32d2e;">Delete</a>';
@@ -286,21 +311,21 @@ function umami_connect_render_events_overview_page() {
 				echo '</td>';
 			}
 
-			if ( ! in_array( 'post', $hidden_columns ) ) {
+			if ( ! in_array( 'post', $hidden_columns, true ) ) {
 				echo '<td class="column-post">';
 				echo '<a href="' . esc_url( get_edit_post_link( $row['post_id'] ) ) . '" target="_blank">' . esc_html( $row['post_title'] ) . '</a>';
 				echo '</td>';
 			}
 
-			if ( ! in_array( 'block_type', $hidden_columns ) ) {
+			if ( ! in_array( 'block_type', $hidden_columns, true ) ) {
 				echo '<td class="column-block_type">' . esc_html( $block_label ) . '</td>';
 			}
 
-			if ( ! in_array( 'label', $hidden_columns ) ) {
+			if ( ! in_array( 'label', $hidden_columns, true ) ) {
 				echo '<td class="column-label">' . esc_html( $row['label'] ) . '</td>';
 			}
 
-			if ( ! in_array( 'data_pairs', $hidden_columns ) ) {
+			if ( ! in_array( 'data_pairs', $hidden_columns, true ) ) {
 				echo '<td class="column-data_pairs">';
 				if ( ! empty( $row['data_pairs'] ) && is_array( $row['data_pairs'] ) ) {
 					$pairs = array();
@@ -310,6 +335,7 @@ function umami_connect_render_events_overview_page() {
 						}
 					}
 					if ( ! empty( $pairs ) ) {
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $pairs contains pre-escaped HTML.
 						echo '<ul style="margin:0 0 0 18px; padding:0; list-style:disc;">' . implode( '', $pairs ) . '</ul>';
 					} else {
 						echo '<span style="color:#888;">–</span>';
@@ -334,6 +360,7 @@ function umami_connect_render_events_overview_page() {
 		);
 
 		$total_pages = ceil( $total_posts / $per_page );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading GET param for pagination display only.
 		$current_page = isset( $_GET['paged'] ) ? max( 1, absint( $_GET['paged'] ) ) : 1;
 
 		if ( $total_pages > 1 ) {
@@ -342,16 +369,18 @@ function umami_connect_render_events_overview_page() {
 			echo '</div>';
 			echo '<div class="tablenav-pages">';
 
-			// translators: %s is the number of items found.
-			echo '<span class="displaying-num">' . sprintf(
-				/* translators: %s is the number of items found. */
-				_n( '%s item', '%s items', $total_posts, 'umami-connect' ),
-				number_format_i18n( $total_posts )
+			echo '<span class="displaying-num">' . esc_html(
+				sprintf(
+					/* translators: %s is the number of items found. */
+					_n( '%s item', '%s items', $total_posts, 'first8marketing-track' ),
+					number_format_i18n( $total_posts )
+				)
 			) . '</span>';
 
 			$base_url = remove_query_arg( 'paged' );
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading GET param for filter display only.
 			$current_filter = isset( $_GET['filter'] ) ? sanitize_key( wp_unslash( $_GET['filter'] ) ) : 'all';
-			if ( $current_filter !== 'all' ) {
+			if ( 'all' !== $current_filter ) {
 				$base_url = add_query_arg( 'filter', $current_filter, $base_url );
 			}
 
@@ -359,7 +388,7 @@ function umami_connect_render_events_overview_page() {
 
 			if ( $current_page > 1 ) {
 				echo '<a class="first-page button" href="' . esc_url( $base_url ) . '">';
-				echo '<span class="screen-reader-text">' . __( 'First page', 'umami-connect' ) . '</span>';
+				echo '<span class="screen-reader-text">' . esc_html__( 'First page', 'first8marketing-track' ) . '</span>';
 				echo '<span aria-hidden="true">&laquo;</span>';
 				echo '</a>';
 			} else {
@@ -369,7 +398,7 @@ function umami_connect_render_events_overview_page() {
 			if ( $current_page > 1 ) {
 				$prev_url = add_query_arg( 'paged', $current_page - 1, $base_url );
 				echo '<a class="prev-page button" href="' . esc_url( $prev_url ) . '">';
-				echo '<span class="screen-reader-text">' . __( 'Previous page', 'umami-connect' ) . '</span>';
+				echo '<span class="screen-reader-text">' . esc_html__( 'Previous page', 'first8marketing-track' ) . '</span>';
 				echo '<span aria-hidden="true">‹</span>';
 				echo '</a>';
 			} else {
@@ -377,16 +406,16 @@ function umami_connect_render_events_overview_page() {
 			}
 
 			echo '<span class="paging-input">';
-			echo '<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page', 'umami-connect' ) . '</label>';
-			echo '<input class="current-page" id="current-page-selector" type="text" name="paged" value="' . $current_page . '" size="' . strlen( $total_pages ) . '" aria-describedby="table-paging" />';
-			echo '<span class="tablenav-paging-text"> ' . __( 'of', 'umami-connect' ) . ' ';
-			echo '<span class="total-pages">' . number_format_i18n( $total_pages ) . '</span></span>';
+			echo '<label for="current-page-selector" class="screen-reader-text">' . esc_html__( 'Current Page', 'first8marketing-track' ) . '</label>';
+			echo '<input class="current-page" id="current-page-selector" type="text" name="paged" value="' . esc_attr( $current_page ) . '" size="' . esc_attr( strlen( $total_pages ) ) . '" aria-describedby="table-paging" />';
+			echo '<span class="tablenav-paging-text"> ' . esc_html__( 'of', 'first8marketing-track' ) . ' ';
+			echo '<span class="total-pages">' . esc_html( number_format_i18n( $total_pages ) ) . '</span></span>';
 			echo '</span>';
 
 			if ( $current_page < $total_pages ) {
 				$next_url = add_query_arg( 'paged', $current_page + 1, $base_url );
 				echo '<a class="next-page button" href="' . esc_url( $next_url ) . '">';
-				echo '<span class="screen-reader-text">' . __( 'Next page', 'umami-connect' ) . '</span>';
+				echo '<span class="screen-reader-text">' . esc_html__( 'Next page', 'first8marketing-track' ) . '</span>';
 				echo '<span aria-hidden="true">›</span>';
 				echo '</a>';
 			} else {
@@ -396,7 +425,7 @@ function umami_connect_render_events_overview_page() {
 			if ( $current_page < $total_pages ) {
 				$last_url = add_query_arg( 'paged', $total_pages, $base_url );
 				echo '<a class="last-page button" href="' . esc_url( $last_url ) . '">';
-				echo '<span class="screen-reader-text">' . __( 'Last page', 'umami-connect' ) . '</span>';
+				echo '<span class="screen-reader-text">' . esc_html__( 'Last page', 'first8marketing-track' ) . '</span>';
 				echo '<span aria-hidden="true">&raquo;</span>';
 				echo '</a>';
 			} else {
@@ -513,7 +542,7 @@ function umami_connect_render_events_overview_page() {
 						}
 						window.location.href = newUrl;
 					} else {
-						$(this).val('<?php echo $current_page; ?>');
+						$(this).val('<?php echo esc_js( $current_page ); ?>');
 					}
 				}
 			});
@@ -531,7 +560,7 @@ add_filter(
 		$result = array();
 
 		$current_page = isset( $_GET['paged'] ) ? max( 1, absint( $_GET['paged'] ) ) : 1;
-		$offset = ( $current_page - 1 ) * $per_page;
+		$offset       = ( $current_page - 1 ) * $per_page;
 
 		$total_posts = $wpdb->get_var(
 			$wpdb->prepare(
@@ -553,13 +582,22 @@ add_filter(
 			)
 		);
 
+		/**
+		 * Find Umami events in blocks.
+		 *
+		 * @param array  $blocks      The blocks to search.
+		 * @param array  $result      The result array (passed by reference).
+		 * @param int    $post_id     The post ID.
+		 * @param string $post_title  The post title.
+		 * @param string $parent_path The parent path.
+		 */
 		function find_umami_events( $blocks, &$result, $post_id, $post_title, $parent_path = '' ) {
 			foreach ( $blocks as $idx => $block ) {
-				$block_path = $parent_path === '' ? (string) $idx : $parent_path . '.' . $idx;
+				$block_path = '' === $parent_path ? (string) $idx : $parent_path . '.' . $idx;
 				$block_name = $block['blockName'] ?? '';
 
 				$trackable_blocks = array( 'core/button', 'core/paragraph', 'core/heading', 'core/quote', 'core/pullquote' );
-				$is_trackable     = in_array( $block_name, $trackable_blocks );
+				$is_trackable     = in_array( $block_name, $trackable_blocks, true );
 
 				if ( ! empty( $block['attrs']['umamiEvent'] ) ) {
 					$event = trim( $block['attrs']['umamiEvent'] );
@@ -592,12 +630,12 @@ add_filter(
 						if ( ! empty( $ev['pairs'] ) && is_array( $ev['pairs'] ) ) {
 									$pairs = $ev['pairs'];
 						}
-						if ( $event_name !== '' || ! empty( $pairs ) ) {
+						if ( '' !== $event_name || ! empty( $pairs ) ) {
 								$link_text = isset( $ev['linkText'] ) ? (string) $ev['linkText'] : '';
 								$link_url  = isset( $ev['linkUrl'] ) ? (string) $ev['linkUrl'] : '';
 								$label     = trim( $link_text ) . ( $link_url ? ' → ' . $link_url : '' );
 								$result[]  = array(
-									'event'       => $event_name !== '' ? $event_name : 'link_click',
+									'event'       => '' !== $event_name ? $event_name : 'link_click',
 									'post_id'     => $post_id,
 									'post_title'  => $post_title,
 									'block_type'  => $block_name,
@@ -619,7 +657,7 @@ add_filter(
 						$label = wp_strip_all_tags( $block['innerHTML'] );
 					}
 
-					if ( $block_name === 'core/button' && ! empty( $label ) ) {
+					if ( 'core/button' === $block_name && ! empty( $label ) ) {
 						$result[] = array(
 							'event'       => '(Candidate)',
 							'post_id'     => $post_id,
@@ -631,7 +669,7 @@ add_filter(
 							'event_type'  => 'none',
 							'is_tracked'  => false,
 						);
-					} elseif ( $block_name !== 'core/button' && ! empty( $block['innerHTML'] ) && strpos( $block['innerHTML'], '<a ' ) !== false ) {
+					} elseif ( 'core/button' !== $block_name && ! empty( $block['innerHTML'] ) && strpos( $block['innerHTML'], '<a ' ) !== false ) {
 						$clean_html = wp_kses_post( $block['innerHTML'] );
 						if ( preg_match_all( '/<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/i', $clean_html, $matches, PREG_SET_ORDER ) ) {
 							foreach ( $matches as $match ) {
@@ -674,7 +712,11 @@ add_filter(
 );
 
 /**
- * Delete an event from a specific block - HTML cleaning approach
+ * Delete an event from a specific block - HTML cleaning approach.
+ *
+ * @param int    $post_id     The post ID.
+ * @param string $block_index The block index.
+ * @param string $event_type  The event type.
  */
 function umami_connect_delete_event_from_block( $post_id, $block_index, $event_type = 'button' ) {
 	$post = get_post( $post_id );
@@ -719,7 +761,14 @@ function umami_connect_delete_event_from_block( $post_id, $block_index, $event_t
 
 
 /**
- * Recursively find and remove event from block by path
+ * Recursively find and remove event from block by path.
+ *
+ * @param array  $blocks       The blocks array (passed by reference).
+ * @param string $target_path  The target path.
+ * @param string $event_type   The event type.
+ * @param bool   $changed      Whether the block was changed (passed by reference).
+ * @param string $current_path The current path.
+ * @param int    $depth        The current depth.
  */
 function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &$changed, $current_path = '', $depth = 0 ) {
 	if ( $depth > UMAMI_CONNECT_MAX_BLOCK_NESTING_DEPTH ) {
@@ -735,10 +784,10 @@ function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &
 			continue;
 		}
 
-		$block_path = $current_path === '' ? (string) $idx : $current_path . '.' . $idx;
+		$block_path = '' === $current_path ? (string) $idx : $current_path . '.' . $idx;
 
 		if ( $block_path === $target_path ) {
-			if ( $event_type === 'button' ) {
+			if ( 'button' === $event_type ) {
 				$attrs_changed = false;
 				if ( isset( $block['attrs']['umamiEvent'] ) ) {
 					unset( $block['attrs']['umamiEvent'] );
@@ -751,9 +800,9 @@ function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &
 
 				if ( $attrs_changed ) {
 					if ( isset( $block['innerHTML'] ) ) {
-						$clean_html = $block['innerHTML'];
-						$clean_html = preg_replace( '/\s+data-umami-event="[^"]*"/', '', $clean_html );
-						$clean_html = preg_replace( '/\s+data-umami-event-[^=\s]*="[^"]*"/', '', $clean_html );
+						$clean_html         = $block['innerHTML'];
+						$clean_html         = preg_replace( '/\s+data-umami-event="[^"]*"/', '', $clean_html );
+						$clean_html         = preg_replace( '/\s+data-umami-event-[^=\s]*="[^"]*"/', '', $clean_html );
 						$block['innerHTML'] = $clean_html;
 					}
 
@@ -761,16 +810,16 @@ function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &
 						$inner_content_count = count( $block['innerContent'] );
 						for ( $i = 0; $i < $inner_content_count; $i++ ) {
 							if ( is_string( $block['innerContent'][ $i ] ) ) {
-								$clean_content = $block['innerContent'][ $i ];
-								$clean_content = preg_replace( '/\s+data-umami-event="[^"]*"/', '', $clean_content );
-								$clean_content = preg_replace( '/\s+data-umami-event-[^=\s]*="[^"]*"/', '', $clean_content );
+								$clean_content               = $block['innerContent'][ $i ];
+								$clean_content               = preg_replace( '/\s+data-umami-event="[^"]*"/', '', $clean_content );
+								$clean_content               = preg_replace( '/\s+data-umami-event-[^=\s]*="[^"]*"/', '', $clean_content );
 								$block['innerContent'][ $i ] = $clean_content;
 							}
 						}
 					}
 					$changed = true;
 				}
-			} elseif ( $event_type === 'link' ) {
+			} elseif ( 'link' === $event_type ) {
 				$attrs_changed = false;
 				if ( isset( $block['attrs']['umamiLinkEvents'] ) ) {
 					unset( $block['attrs']['umamiLinkEvents'] );
@@ -789,15 +838,15 @@ function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &
 						$clean_html = preg_replace_callback(
 							'/\s+rel="([^"]*)"/',
 							function ( $matches ) {
-								$rel_value = $matches[1];
-								$tokens = preg_split( '/\s+/', trim( $rel_value ) );
+								$rel_value    = $matches[1];
+								$tokens       = preg_split( '/\s+/', trim( $rel_value ) );
 								$clean_tokens = array_filter(
 									$tokens,
 									function ( $token ) {
 										return ! preg_match( '/^umami[:\-]/', $token );
 									}
 								);
-								$clean_rel = implode( ' ', $clean_tokens );
+								$clean_rel    = implode( ' ', $clean_tokens );
 
 								if ( empty( trim( $clean_rel ) ) ) {
 									return '';
@@ -827,15 +876,15 @@ function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &
 								$clean_content = preg_replace_callback(
 									'/\s+rel="([^"]*)"/',
 									function ( $matches ) {
-										$rel_value = $matches[1];
-										$tokens = preg_split( '/\s+/', trim( $rel_value ) );
+										$rel_value    = $matches[1];
+										$tokens       = preg_split( '/\s+/', trim( $rel_value ) );
 										$clean_tokens = array_filter(
 											$tokens,
 											function ( $token ) {
 												return ! preg_match( '/^umami[:\-]/', $token );
 											}
 										);
-										$clean_rel = implode( ' ', $clean_tokens );
+										$clean_rel    = implode( ' ', $clean_tokens );
 
 										if ( empty( trim( $clean_rel ) ) ) {
 											return '';

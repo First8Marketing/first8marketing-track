@@ -1,14 +1,14 @@
-# umami Connect for WordPress
+# First8 Marketing Track - Privacy-First WordPress Analytics & WooCommerce Event Tracking Plugin
 
-> **Privacy-first website analytics made simple** — Connect your WordPress site to [Umami Analytics](https://umami.is) in minutes, not hours.
+> **GDPR-Compliant Website Analytics & Advanced Event Tracking** — Connect your WordPress and WooCommerce site to Umami Analytics for privacy-first, cookie-free visitor tracking and comprehensive eCommerce analytics.
 
-Transform how you understand your website visitors with **umami Connect** — the most user-friendly WordPress plugin for privacy-focused analytics. Whether you're a blogger, business owner, or agency managing client sites, get powerful insights without compromising your visitors' privacy or dealing with complex setup processes.
+**First8 Marketing Track** is the ultimate WordPress analytics plugin for privacy-conscious website owners, bloggers, and WooCommerce store owners. Get powerful, real-time website analytics and complete WooCommerce event tracking without cookies, without compromising visitor privacy, and without complex setup. Perfect for GDPR compliance, this plugin provides enterprise-grade analytics tracking for WordPress sites and online stores.
 
-[![Latest Release](https://img.shields.io/github/v/release/ceviixx/umami-wp-connect?label=Latest)](https://github.com/ceviixx/umami-wp-connect/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/ceviixx/umami-wp-connect/total)](https://github.com/ceviixx/umami-wp-connect/releases)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/ceviixx/umami-wp-connect/blob/main/LICENSE)
-[![GitHub](https://img.shields.io/badge/GitHub-Issues-181717?logo=github)](https://github.com/ceviixx/umami-wp-connect/issues)
-[![Discussions](https://img.shields.io/badge/GitHub-Discussions-181717?logo=github)](https://github.com/ceviixx/umami-wp-connect/discussions)
+[![Latest Release](https://img.shields.io/github/v/release/ceviixx/umami-wp-connect?label=Latest)](https://github.com/First8Marketing/first8marketing-track/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/ceviixx/umami-wp-connect/total)](https://github.com/First8Marketing/first8marketing-track/releases)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/First8Marketing/first8marketing-track/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-Issues-181717?logo=github)](https://github.com/First8Marketing/first8marketing-track/issues)
+[![Discussions](https://img.shields.io/badge/GitHub-Discussions-181717?logo=github)](https://github.com/First8Marketing/first8marketing-track/discussions)
 [![Discord](https://img.shields.io/badge/Discord-Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/84w4CQU7Jb)
 
 [![WordPress](https://img.shields.io/badge/WordPress-5.0%2B-21759B?logo=wordpress&logoColor=white)](https://wordpress.org/)
@@ -29,29 +29,105 @@ Transform how you understand your website visitors with **umami Connect** — th
 
 ---
 
-## Key Features
+## Key Features - WordPress Analytics & WooCommerce Tracking
 
-- **Visual Event Tracking** — Add tracking to buttons and links directly in Gutenberg editor
-- **Smart Auto-Tracking** — Automatically track links, buttons, and form submissions  
-- **Privacy Controls** — Self-protection mode, Do Not Track support, domain restrictions
-- **Event Management** — View and manage all your tracking from one dashboard
-- **Advanced Options** — beforeSend hooks, custom tagging, URL cleanup
+### 🎯 **Privacy-First Analytics Tracking**
+- **GDPR & CCPA Compliant** — Cookie-free analytics, no personal data collection, full privacy compliance
+- **Self-Hosted Analytics** — Keep your data on your own servers with Umami Analytics integration
+- **Do Not Track Support** — Respect visitor privacy preferences automatically
+
+### 🛒 **Complete WooCommerce Event Tracking**
+- **eCommerce Analytics** — Track product views, add-to-cart events, checkout steps, and purchases
+- **Customer Journey Tracking** — Monitor complete shopping behavior from first visit to conversion
+- **Revenue Analytics** — Track sales, average order value, and conversion rates
+- **Abandoned Cart Tracking** — Identify drop-off points in your sales funnel
+
+### 📊 **Advanced WordPress Event Tracking**
+- **Visual Event Tracking** — Add tracking to buttons, links, and CTAs directly in Gutenberg block editor
+- **Smart Auto-Tracking** — Automatically track clicks, form submissions, downloads, and outbound links
+- **Custom Event Tracking** — Create unlimited custom events for any user interaction
+- **Real-Time Analytics** — See visitor activity and events as they happen
+
+### 🎨 **Easy Setup & Management**
+- **One-Click Installation** — Connect to Umami Analytics in under 5 minutes
+- **Visual Event Dashboard** — View and manage all tracking events from one central location
+- **No Coding Required** — User-friendly interface for non-technical users
+- **Developer-Friendly** — Advanced hooks and filters for custom implementations
 
 ---
 
-## Installation
+## 🎯 Perfect For
 
-1. **Download** the latest release from the [GitHub Releases page](https://github.com/ceviixx/umami-wp-connect/releases)
+### **WooCommerce Store Owners**
+- Track complete customer journey from first visit to purchase
+- Monitor product performance and shopping behavior
+- Optimize conversion rates with detailed eCommerce analytics
+- Identify abandoned carts and improve checkout flow
+
+### **Content Publishers & Bloggers**
+- Understand which content drives engagement
+- Track reader behavior and content performance
+- Monitor outbound link clicks and downloads
+- Measure content marketing ROI
+
+### **Marketing Agencies**
+- Manage analytics for multiple client websites
+- Provide privacy-compliant tracking solutions
+- Track campaign performance and conversions
+- Generate detailed client reports
+
+### **Privacy-Conscious Businesses**
+- GDPR and CCPA compliant analytics
+- No cookies, no personal data collection
+- Self-hosted data ownership
+- Transparent privacy practices
+
+---
+
+## 🚀 Why Choose First8 Marketing Track?
+
+### **vs. Google Analytics**
+✅ No cookies required
+✅ GDPR compliant out-of-the-box
+✅ Faster page load times
+✅ No data shared with third parties
+✅ Simple, focused interface
+
+### **vs. Other WordPress Analytics Plugins**
+✅ Complete WooCommerce integration
+✅ Visual event tracking in Gutenberg
+✅ Advanced auto-tracking capabilities
+✅ Developer-friendly with hooks & filters
+✅ Active development and support
+
+---
+
+## 📦 Installation
+
+### **Quick Install (Recommended)**
+1. **Download** the latest release from the [GitHub Releases page](https://github.com/First8Marketing/first8marketing-track/releases)
 2. **Upload** via WordPress Admin → Plugins → Add New → Upload Plugin
 3. **Activate** the plugin
-4. **Configure** via Settings → umami Connect
+4. **Configure** via Settings → First8 Marketing Track
+
+### **Manual Installation**
+1. Download and extract the plugin files
+2. Upload the `first8marketing-track` folder to `/wp-content/plugins/`
+3. Activate through the WordPress Plugins menu
+4. Configure your Umami Analytics connection
+
+### **Requirements**
+- WordPress 5.0 or higher
+- PHP 7.4 or higher
+- Umami Analytics instance (self-hosted or cloud)
+- WooCommerce 4.0+ (optional, for eCommerce tracking)
 
 ---
 
 ## Need Help?
 
-- **GitHub Issues:** [Report bugs or request features](https://github.com/ceviixx/umami-wp-connect/issues)
-- **GitHub Discussions:** [Community questions and support](https://github.com/ceviixx/umami-wp-connect/discussions)
+- **GitHub Issues:** [Report bugs or request features](https://github.com/First8Marketing/first8marketing-track/issues)
+- **GitHub Discussions:** [Community questions and support](https://github.com/First8Marketing/first8marketing-track/discussions)
 - **Discord Community:** [Join the community](https://discord.gg/84w4CQU7Jb) for quick help and discussions
 
 ---
@@ -60,7 +136,7 @@ Transform how you understand your website visitors with **umami Connect** — th
 
 ### Ready to Integrate?
 
-[**Download Latest Release**](https://github.com/ceviixx/umami-wp-connect/releases/latest) • [**View Documentation**](https://github.com/ceviixx/umami-wp-connect) • [**Join Community**](https://discord.gg/84w4CQU7Jb)
+[**Download Latest Release**](https://github.com/First8Marketing/first8marketing-track/releases/latest) • [**View Documentation**](https://github.com/First8Marketing/first8marketing-track) • [**Join Community**](https://discord.gg/f46SeUS3jn)
 
 </div>
 

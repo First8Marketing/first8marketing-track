@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: dashboard-status-widget.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 add_action(
 	'wp_dashboard_setup',
 	function () {
