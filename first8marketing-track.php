@@ -70,6 +70,8 @@ class Umami_WP_Connect {
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-tracker.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-admin.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-events.php';
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-link-manager.php';
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-link-shortcodes.php';
 
 		// Load WooCommerce integration if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
@@ -109,6 +111,14 @@ class Umami_WP_Connect {
 		if ( class_exists( 'WooCommerce' ) ) {
 			Umami_WooCommerce::get_instance();
 		}
+
+		// Initialize link manager.
+		$link_manager = new \First8Marketing\Track\Link_Manager();
+		$link_manager->init();
+
+		// Initialize link shortcodes.
+		$link_shortcodes = new \First8Marketing\Track\Link_Shortcodes();
+		$link_shortcodes->init();
 
 		do_action( 'umami_wp_connect_init' );
 	}

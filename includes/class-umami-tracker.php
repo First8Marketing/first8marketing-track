@@ -82,6 +82,13 @@ class Umami_Tracker {
 		$website_id = get_option( 'umami_website_id' );
 		$script_url = get_option( 'umami_script_url', 'https://analytics.umami.is/script.js' );
 
+		// Get user ID if logged in
+		$user_id = '';
+		if ( is_user_logged_in() ) {
+			$current_user = wp_get_current_user();
+			$user_id      = (string) $current_user->ID;
+		}
+
 		// Output tracking script.
 		?>
 		<script
@@ -90,8 +97,23 @@ class Umami_Tracker {
 			data-website-id="<?php echo esc_attr( $website_id ); ?>"
 			src="<?php echo esc_url( $script_url ); ?>"
 			data-domains="<?php echo esc_attr( wp_parse_url( home_url(), PHP_URL_HOST ) ); ?>"
+			<?php if ( ! empty( $user_id ) ) : ?>
+			data-user-id="<?php echo esc_attr( $user_id ); ?>"
+			<?php endif; ?>
 		></script>
 		<?php
+
+		// Add inline script to set user ID in Umami
+		if ( ! empty( $user_id ) ) :
+			?>
+			<script>
+				window.umami = window.umami || function() { (window.umami.q = window.umami.q || []).push(arguments); };
+				window.umami.identify({
+					userId: '<?php echo esc_js( $user_id ); ?>'
+				});
+			</script>
+			<?php
+		endif;
 	}
 
 	/**
