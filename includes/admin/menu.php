@@ -131,7 +131,7 @@ function umami_connect_add_help() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
@@ -165,7 +165,7 @@ function umami_connect_add_help_self_protection() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
@@ -203,7 +203,7 @@ function umami_connect_add_help_automation() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
@@ -272,7 +272,7 @@ function umami_connect_add_help_events_overview() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
@@ -311,7 +311,7 @@ function umami_connect_add_help_update() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
@@ -327,7 +327,7 @@ function umami_connect_add_help_advanced() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs/tracker-configuration" target="_blank">Tracker configuration</a></p>'
 	);
 
