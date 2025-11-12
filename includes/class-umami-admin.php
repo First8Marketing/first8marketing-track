@@ -71,22 +71,46 @@ class Umami_Admin {
 	 */
 	public function register_settings() {
 		// General settings.
-		register_setting( 'umami_settings', 'umami_website_id' );
-		register_setting( 'umami_settings', 'umami_script_url' );
-		register_setting( 'umami_settings', 'umami_api_url' );
-		register_setting( 'umami_settings', 'umami_api_key' );
+		register_setting( 'umami_settings', 'umami_website_id', array(
+			'sanitize_callback' => 'sanitize_text_field'
+		) );
+		register_setting( 'umami_settings', 'umami_script_url', array(
+			'sanitize_callback' => 'esc_url_raw'
+		) );
+		register_setting( 'umami_settings', 'umami_api_url', array(
+			'sanitize_callback' => 'esc_url_raw'
+		) );
+		register_setting( 'umami_settings', 'umami_api_key', array(
+			'sanitize_callback' => 'sanitize_text_field'
+		) );
 
 		// Tracking settings.
-		register_setting( 'umami_settings', 'enable_tracking' );
-		register_setting( 'umami_settings', 'enable_form_tracking' );
-		register_setting( 'umami_settings', 'enable_woocommerce' );
-		register_setting( 'umami_settings', 'track_logged_in_users' );
-		register_setting( 'umami_settings', 'exclude_roles' );
+		register_setting( 'umami_settings', 'enable_tracking', array(
+			'sanitize_callback' => 'rest_sanitize_boolean'
+		) );
+		register_setting( 'umami_settings', 'enable_form_tracking', array(
+			'sanitize_callback' => 'rest_sanitize_boolean'
+		) );
+		register_setting( 'umami_settings', 'enable_woocommerce', array(
+			'sanitize_callback' => 'rest_sanitize_boolean'
+		) );
+		register_setting( 'umami_settings', 'track_logged_in_users', array(
+			'sanitize_callback' => 'rest_sanitize_boolean'
+		) );
+		register_setting( 'umami_settings', 'exclude_roles', array(
+			'sanitize_callback' => array( $this, 'sanitize_exclude_roles' )
+		) );
 
 		// Advanced settings.
-		register_setting( 'umami_settings', 'enable_debug' );
-		register_setting( 'umami_settings', 'batch_size' );
-		register_setting( 'umami_settings', 'batch_interval' );
+		register_setting( 'umami_settings', 'enable_debug', array(
+			'sanitize_callback' => 'rest_sanitize_boolean'
+		) );
+		register_setting( 'umami_settings', 'batch_size', array(
+			'sanitize_callback' => 'absint'
+		) );
+		register_setting( 'umami_settings', 'batch_interval', array(
+			'sanitize_callback' => 'absint'
+		) );
 
 		// General section.
 		add_settings_section(
@@ -283,6 +307,29 @@ class Umami_Admin {
 			UMAMI_WP_VERSION,
 			true
 		);
+	}
+
+	/**
+	 * Sanitize exclude roles setting
+	 *
+	 * @param mixed $value Input value.
+	 * @return array Sanitized roles array.
+	 */
+	public function sanitize_exclude_roles( $value ) {
+		if ( ! is_array( $value ) ) {
+			return array();
+		}
+
+		$valid_roles = array_keys( get_editable_roles() );
+		$sanitized   = array();
+
+		foreach ( $value as $role ) {
+			if ( in_array( $role, $valid_roles, true ) ) {
+				$sanitized[] = sanitize_text_field( $role );
+			}
+		}
+
+		return $sanitized;
 	}
 }
 

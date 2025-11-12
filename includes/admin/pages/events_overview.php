@@ -21,7 +21,7 @@ define( 'UMAMI_CONNECT_MAX_BLOCK_NESTING_DEPTH', 15 );
  */
 function umami_connect_render_events_overview_page() {
 	if ( ! current_user_can( 'edit_posts' ) ) {
-		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'umami-connect' ) );
+		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'first8marketing-track' ) );
 	}
 
 	if ( isset( $_POST['umami_delete_event'] ) && check_admin_referer( 'umami_delete_event', 'umami_delete_nonce' ) ) {
@@ -451,13 +451,13 @@ function umami_connect_render_events_overview_page() {
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		?>
 
-		<div id="umami-delete-dialog" title="<?php esc_attr_e( 'Confirm Event Deletion', 'umami-connect' ); ?>" style="display: none;">
+		<div id="umami-delete-dialog" title="<?php esc_attr_e( 'Confirm Event Deletion', 'first8marketing-track' ); ?>" style="display: none;">
 			<div style="padding: 8px 0;">
 				<p style="margin: 0 0 12px; font-size: 14px; line-height: 1.5;">
-					<?php esc_html_e( 'Are you sure you want to delete this event tracking configuration?', 'umami-connect' ); ?>
+					<?php esc_html_e( 'Are you sure you want to delete this event tracking configuration?', 'first8marketing-track' ); ?>
 				</p>
 				<p style="margin: 0; color: #d63638; font-weight: 600; font-size: 13px;">
-					<?php esc_html_e( 'This action cannot be undone.', 'umami-connect' ); ?>
+					<?php esc_html_e( 'This action cannot be undone.', 'first8marketing-track' ); ?>
 				</p>
 			</div>
 		</div>
@@ -477,7 +477,7 @@ function umami_connect_render_events_overview_page() {
 				closeOnEscape: true,
 				buttons: [
 					{
-						text: '<?php echo esc_js( __( 'Cancel', 'umami-connect' ) ); ?>',
+						text: '<?php echo esc_js( __( 'Cancel', 'first8marketing-track' ) ); ?>',
 						class: 'button',
 						style: 'background: #f6f7f7; border-color: #50575e; color: #50575e;',
 						click: function() {
@@ -485,7 +485,7 @@ function umami_connect_render_events_overview_page() {
 						}
 					},
 					{
-						text: '<?php echo esc_js( __( 'Delete Event', 'umami-connect' ) ); ?>',
+						text: '<?php echo esc_js( __( 'Delete Event', 'first8marketing-track' ) ); ?>',
 						class: 'button button-primary',
 						style: 'background: #d63638; border-color: #d63638;',
 						click: function() {
@@ -728,7 +728,7 @@ function umami_connect_delete_event_from_block( $post_id, $block_index, $event_t
 	$blocks  = parse_blocks( $content );
 	$changed = false;
 
-	remove_event_from_block_by_path( $blocks, $block_index, $event_type, $changed );
+	umami_connect_remove_event_from_block_by_path( $blocks, $block_index, $event_type, $changed );
 
 	if ( $changed ) {
 		$new_content = serialize_blocks( $blocks );
@@ -770,7 +770,7 @@ function umami_connect_delete_event_from_block( $post_id, $block_index, $event_t
  * @param string $current_path The current path.
  * @param int    $depth        The current depth.
  */
-function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &$changed, $current_path = '', $depth = 0 ) {
+function umami_connect_remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &$changed, $current_path = '', $depth = 0 ) {
 	if ( $depth > UMAMI_CONNECT_MAX_BLOCK_NESTING_DEPTH ) {
 		return;
 	}
@@ -909,7 +909,7 @@ function remove_event_from_block_by_path( &$blocks, $target_path, $event_type, &
 
 		if ( ! $changed && ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
 			if ( strpos( $target_path, $block_path . '.' ) === 0 ) {
-				remove_event_from_block_by_path( $block['innerBlocks'], $target_path, $event_type, $changed, $block_path, $depth + 1 );
+				umami_connect_remove_event_from_block_by_path( $block['innerBlocks'], $target_path, $event_type, $changed, $block_path, $depth + 1 );
 			}
 		}
 	}

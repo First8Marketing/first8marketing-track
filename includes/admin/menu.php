@@ -450,7 +450,7 @@ function umami_connect_add_screen_options_events_overview() {
 	add_screen_option(
 		'per_page',
 		array(
-			'label'   => __( 'Events per page', 'umami-connect' ),
+			'label'   => __( 'Events per page', 'first8marketing-track' ),
 			'default' => 20,
 			'option'  => 'events_per_page',
 		)
@@ -469,11 +469,11 @@ function umami_connect_add_screen_options_events_overview() {
  */
 function umami_connect_events_overview_columns( $columns ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- WordPress filter signature.
 	return array(
-		'event'      => __( 'Event', 'umami-connect' ),
-		'post'       => __( 'Post/Page', 'umami-connect' ),
-		'block_type' => __( 'Block Type', 'umami-connect' ),
-		'label'      => __( 'Label/Text', 'umami-connect' ),
-		'data_pairs' => __( 'Data Pairs', 'umami-connect' ),
+		'event'      => __( 'Event', 'first8marketing-track' ),
+		'post'       => __( 'Post/Page', 'first8marketing-track' ),
+		'block_type' => __( 'Block Type', 'first8marketing-track' ),
+		'label'      => __( 'Label/Text', 'first8marketing-track' ),
+		'data_pairs' => __( 'Data Pairs', 'first8marketing-track' ),
 	);
 }
 

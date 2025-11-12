@@ -37,7 +37,7 @@ add_action(
 			'umami_disable_auto_track',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '0',
 			)
 		);
@@ -70,7 +70,7 @@ add_action(
 			'umami_tracker_exclude_search',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '0',
 			)
 		);
@@ -79,7 +79,7 @@ add_action(
 			'umami_tracker_exclude_hash',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '0',
 			)
 		);
@@ -88,7 +88,7 @@ add_action(
 			'umami_tracker_do_not_track',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '0',
 			)
 		);
@@ -245,7 +245,7 @@ add_action(
 			'umami_exclude_logged_in',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '1',
 			)
 		);
@@ -255,7 +255,7 @@ add_action(
 			'umami_autotrack_links',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '1',
 			)
 		);
@@ -264,7 +264,7 @@ add_action(
 			'umami_autotrack_buttons',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '1',
 			)
 		);
@@ -273,7 +273,7 @@ add_action(
 			'umami_autotrack_forms',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '1',
 			)
 		);
@@ -282,7 +282,7 @@ add_action(
 			'umami_consent_required',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '0',
 			)
 		);
@@ -306,7 +306,7 @@ add_action(
 			'umami_debug',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => fn( $v ) => $v ? '1' : '0',
+				'sanitize_callback' => function( $v ) { return $v ? '1' : '0'; },
 				'default'           => '0',
 			)
 		);

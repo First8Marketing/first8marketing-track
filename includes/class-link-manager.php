@@ -331,9 +331,14 @@ class Link_Manager {
 		// Get redirect type.
 		$redirect_type = get_post_meta( $post->ID, '_f8m_redirect_type', true ) ?: '307';
 
-		// Perform redirect.
-		wp_redirect( $target_url, (int) $redirect_type );
-		exit;
+		// Perform redirect with additional validation.
+		$safe_url = esc_url_raw( $target_url );
+		if ( $safe_url && wp_http_validate_url( $safe_url ) ) {
+			wp_redirect( $safe_url, (int) $redirect_type );
+			exit;
+		} else {
+			wp_die( esc_html__( 'Invalid redirect URL.', 'first8marketing-track' ) );
+		}
 	}
 
 	/**

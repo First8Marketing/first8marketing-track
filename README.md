@@ -1,3 +1,14 @@
+=== First8 Marketing Track ===
+Contributors: First8Marketing
+Donate link: https://first8marketing.com
+Tags: analytics, tracking, umami, woocommerce, gdpr, privacy, event tracking, ecommerce
+Requires at least: 6.4
+Tested up to: 6.6
+Requires PHP: 7.4
+Stable tag: 1.0.0
+License: MIT
+License URI: https://opensource.org/licenses/MIT
+
 # First8 Marketing Track - WordPress Analytics & WooCommerce Event Tracking Plugin
 
 > **GDPR-Compliant Website Analytics & Event Tracking** — Connects WordPress and WooCommerce sites to Umami Analytics for cookie-free visitor tracking and eCommerce analytics.
@@ -475,7 +486,7 @@ Revenue impact: $12,400/month increase from conversion funnel improvements
 
 ### **Requirements**
 - WordPress 6.4 or higher
-- PHP 8.2 or higher
+- PHP 7.4 or higher
 - Umami Analytics instance (self-hosted or cloud)
 - WooCommerce 8.0+ (optional, for eCommerce tracking)
 
@@ -554,7 +565,7 @@ WordPress/WooCommerce → First8 Marketing Track → Umami Analytics → Recomme
 
 **Prerequisites:**
 - WordPress 6.4+
-- PHP 8.2+
+- PHP 7.4+
 - WooCommerce 8.0+ (for e-commerce tracking)
 - Umami Analytics instance (with First8 Marketing enhancements)
 
