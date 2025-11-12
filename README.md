@@ -1,9 +1,9 @@
 === First8 Marketing Track ===
 Contributors: First8Marketing
 Donate link: https://first8marketing.com
-Tags: analytics, tracking, umami, woocommerce, gdpr, privacy, event tracking, ecommerce
+Tags: analytics, tracking, umami, woocommerce, privacy
 Requires at least: 6.4
-Tested up to: 6.6
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: MIT

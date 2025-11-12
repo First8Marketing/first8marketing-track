@@ -334,7 +334,7 @@ class Link_Manager {
 		// Perform redirect with additional validation.
 		$safe_url = esc_url_raw( $target_url );
 		if ( $safe_url && wp_http_validate_url( $safe_url ) ) {
-			wp_redirect( $safe_url, (int) $redirect_type );
+			wp_safe_redirect( $safe_url, (int) $redirect_type );
 			exit;
 		} else {
 			wp_die( esc_html__( 'Invalid redirect URL.', 'first8marketing-track' ) );

@@ -1,6 +1,6 @@
 <?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Main plugin file.
 /**
- * Plugin Name: First8 Marketing - Track
+ * Plugin Name: First8 Marketing Track
  * Plugin URI: https://first8marketing.com
  * Description: Advanced analytics tracking with Umami for WordPress and WooCommerce events
  * Version: 1.0.0
@@ -9,7 +9,6 @@
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
  * Text Domain: first8marketing-track
- * Domain Path: /languages
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * WC requires at least: 8.0
@@ -89,7 +88,6 @@ class Umami_WP_Connect {
 
 		// Initialize components.
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
-		add_action( 'init', array( $this, 'load_textdomain' ) );
 	}
 
 	/**
@@ -123,16 +121,6 @@ class Umami_WP_Connect {
 		do_action( 'umami_wp_connect_init' );
 	}
 
-	/**
-	 * Load plugin textdomain
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain(
-			'first8marketing-track',
-			false,
-			dirname( UMAMI_WP_PLUGIN_BASENAME ) . '/languages'
-		);
-	}
 
 	/**
 	 * Plugin activation.

@@ -210,7 +210,7 @@ function umami_connect_render_events_overview_page() {
 		 * @param string $col   Column key.
 		 * @return string Escaped HTML for sortable link.
 		 */
-		function sort_link( $label, $col ) {
+		function umami_connect_sort_link( $label, $col ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading GET params for display sorting only.
 			$current = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : 'event';
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading GET params for display sorting only.
@@ -591,7 +591,7 @@ add_filter(
 		 * @param string $post_title  The post title.
 		 * @param string $parent_path The parent path.
 		 */
-		function find_umami_events( $blocks, &$result, $post_id, $post_title, $parent_path = '' ) {
+		function umami_connect_find_umami_events( $blocks, &$result, $post_id, $post_title, $parent_path = '' ) {
 			foreach ( $blocks as $idx => $block ) {
 				$block_path = '' === $parent_path ? (string) $idx : $parent_path . '.' . $idx;
 				$block_name = $block['blockName'] ?? '';
