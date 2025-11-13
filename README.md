@@ -53,12 +53,26 @@ First8 Marketing Track is a WordPress analytics plugin that provides comprehensi
    - Upload to WordPress Admin → Plugins → Add New → Upload Plugin
    - Activate the plugin
 
-2. **Configure Umami Connection:**
+2. **Configure Umami Analytics Settings:**
 
-   - Navigate to Settings → First8 Marketing Track
-   - Enter your Umami Analytics URL (e.g., `https://analytics.yourdomain.com`)
-   - Enter your Website ID from Umami dashboard
-   - Click "Save Changes"
+   Navigate to Settings → First8 Marketing Track to configure your Umami analytics connection:
+
+   **General Settings:**
+   - **Website ID**: Your Umami website ID (found in your Umami dashboard under Website Details)
+   - **Script URL**: URL to the Umami tracking script (typically your Umami instance URL + `/script.js`)
+   - **API URL**: URL to the Umami API endpoint (typically your Umami instance URL + `/api/send`)
+
+   **Tracking Settings:**
+   - **Enable Tracking**: Toggle to enable/disable Umami tracking on your site
+   - **Automated Link Tracking**: Enable automatic tracking of link clicks
+   - **Automated Button Tracking**: Enable automatic tracking of button clicks
+   - **Automated Form Tracking**: Enable automatic tracking of form submissions
+   - **WooCommerce Tracking**: Enable WooCommerce event tracking (requires WooCommerce)
+
+   **Advanced Settings:**
+   - **Debug Mode**: Enable debug logging for troubleshooting
+   - **Event Queue Size**: Configure the event queue buffer size
+   - **Retry Attempts**: Set number of retry attempts for failed events
 
 3. **Enable Tracking Features:**
 
