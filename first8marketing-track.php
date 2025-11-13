@@ -106,7 +106,7 @@ class Umami_WP_Connect {
 		Umami_Events::get_instance();
 
 		// Initialize WooCommerce tracking.
-		if ( class_exists( 'WooCommerce' ) ) {
+		if ( class_exists( 'WooCommerce' ) && class_exists( 'Umami_WooCommerce' ) ) {
 			Umami_WooCommerce::get_instance();
 		}
 
