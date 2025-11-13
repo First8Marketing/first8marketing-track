@@ -1,6 +1,17 @@
 <?php
+/**
+ * File: advanced.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
+/**
+ * Render the advanced settings page.
+ */
 function umami_connect_advanced_page() {
-	$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'host-url'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$tab  = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'host-url'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$tabs = array(
 		'host-url'       => 'Host URL',
 		'auto-track'     => 'Auto track',
@@ -26,7 +37,7 @@ function umami_connect_advanced_page() {
 				<?php settings_fields( 'umami_connect_advanced' ); ?>
 				<table class="form-table" role="presentation">
 					<tbody>
-					<?php if ( $tab === 'host-url' ) : ?>
+					<?php if ( 'host-url' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_tracker_host_url">Host URL override</label></th>
 							<td>
@@ -34,7 +45,7 @@ function umami_connect_advanced_page() {
 								<p class="description">Sets <code>data-host-url</code> on the tracker script. Leave empty to use the script host.</p>
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'auto-track' ) : ?>
+					<?php elseif ( 'auto-track' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_disable_auto_track">Disable auto tracking</label></th>
 							<td>
@@ -43,7 +54,7 @@ function umami_connect_advanced_page() {
 								<p class="description">Note: The plugin's Automation settings are separate and can still emit events.</p>
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'domains' ) : ?>
+					<?php elseif ( 'domains' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_tracker_domains">Allowed domains</label></th>
 							<td>
@@ -51,7 +62,7 @@ function umami_connect_advanced_page() {
 								<p class="description">Comma separated. Sets <code>data-domains</code> to restrict where the tracker runs.</p>
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'tag' ) : ?>
+					<?php elseif ( 'tag' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_tracker_tag">Event tag</label></th>
 							<td>
@@ -59,7 +70,7 @@ function umami_connect_advanced_page() {
 								<p class="description">Sets <code>data-tag</code> so you can filter events by tag in Umami.</p>
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'exclude-search' ) : ?>
+					<?php elseif ( 'exclude-search' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_tracker_exclude_search">Exclude search</label></th>
 							<td>
@@ -68,7 +79,7 @@ function umami_connect_advanced_page() {
 
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'exclude-hash' ) : ?>
+					<?php elseif ( 'exclude-hash' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_tracker_exclude_hash">Exclude hash</label></th>
 							<td>
@@ -76,7 +87,7 @@ function umami_connect_advanced_page() {
 								<label><input type="checkbox" id="umami_tracker_exclude_hash" name="umami_tracker_exclude_hash" value="1" <?php checked( $v, '1' ); ?> /> Set <code>data-exclude-hash="true"</code> to ignore URL hash fragments.</label>
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'dnt' ) : ?>
+					<?php elseif ( 'dnt' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label for="umami_tracker_do_not_track">Respect Do Not Track</label></th>
 							<td>
@@ -84,7 +95,7 @@ function umami_connect_advanced_page() {
 								<label><input type="checkbox" id="umami_tracker_do_not_track" name="umami_tracker_do_not_track" value="1" <?php checked( $v, '1' ); ?> /> Set <code>data-do-not-track="true"</code> to respect the browser setting.</label>
 							</td>
 						</tr>
-					<?php elseif ( $tab === 'before-send' ) : ?>
+					<?php elseif ( 'before-send' === $tab ) : ?>
 						<tr>
 							<th scope="row"><label>beforeSend</label></th>
 							<td>
@@ -139,9 +150,9 @@ function umami_connect_advanced_page() {
 										<details style="margin-top:6px;">
 											<summary>Example</summary>
 											<pre style="background:#f6f7f7; padding:8px; overflow:auto;">function(payload, url) {
-	// Block events for preview URLs
+	// Block events for preview URLs.
 	if (url.includes('preview=true')) return false;
-	// Attach custom info
+	// Attach custom info.
 	payload.locale = document.documentElement.lang || 'en';
 	return payload;
 }</pre>

@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: filter-plugin-action-links.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 add_filter(
 	'plugin_action_links_' . plugin_basename( dirname( __DIR__, 2 ) . '/umami-connect.php' ),
 	function ( $links ) {

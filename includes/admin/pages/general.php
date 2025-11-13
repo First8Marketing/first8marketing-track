@@ -1,4 +1,15 @@
 <?php
+/**
+ * File: general.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
+/**
+ * Render the general settings page.
+ */
 function umami_connect_settings_page() {
 	?>
 	<div class="wrap">

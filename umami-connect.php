@@ -6,6 +6,10 @@
  * Author: ceviixx
  * Author URI: https://ceviixx.github.io/
  * Plugin URI: https://github.com/ceviixx/umami-wp-connect
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

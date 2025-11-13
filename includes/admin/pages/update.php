@@ -1,8 +1,19 @@
 <?php
+/**
+ * File: update.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
+/**
+ * Render the update page.
+ */
 function umami_connect_update_page() {
 	if ( isset( $_POST['umami_connect_self_update'] ) && check_admin_referer( 'umami_connect_self_update', 'umami_connect_self_update_nonce' ) ) {
 		$update_version  = isset( $_POST['umami_update_version'] ) ? sanitize_text_field( wp_unslash( $_POST['umami_update_version'] ) ) : '';
-		$release_api_url = 'https://api.github.com/repos/' . UMAMI_CONNECT_GITHUB_USER . '/' . UMAMI_CONNECT_GITHUB_REPO . '/releases/tags/' . urlencode( $update_version );
+		$release_api_url = 'https://api.github.com/repos/' . UMAMI_CONNECT_GITHUB_USER . '/' . UMAMI_CONNECT_GITHUB_REPO . '/releases/tags/' . urlencode( $update_version ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode -- GitHub API compatibility.
 		$args            = array(
 			'headers' => array(
 				'Accept'     => 'application/vnd.github.v3+json',
@@ -12,7 +23,8 @@ function umami_connect_update_page() {
 		);
 		$response        = wp_remote_get( $release_api_url, $args );
 		$zip_url         = '';
-		if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && $response['response']['code'] === 200 ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_urlencode -- Legacy code.
+		if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && 200 === $response['response']['code'] ) {
 			$body = json_decode( wp_remote_retrieve_body( $response ), true );
 			if ( ! empty( $body['assets'] ) && is_array( $body['assets'] ) ) {
 				foreach ( $body['assets'] as $asset ) {
@@ -28,7 +40,7 @@ function umami_connect_update_page() {
 				$zip_url = $body['zipball_url'];
 			}
 		}
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST'
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD']
 			&& isset( $_POST['umami_connect_self_update'] )
 			&& check_admin_referer( 'umami_connect_self_update', 'umami_connect_self_update_nonce' )
 		) {
@@ -105,7 +117,7 @@ function umami_connect_update_page() {
 	$latest_body    = '';
 
 	$response = wp_remote_get( $github_api_url, $args );
-	if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && $response['response']['code'] === 200 ) {
+	if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && 200 === $response['response']['code'] ) {
 		$releases = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( ! empty( $releases ) && is_array( $releases ) ) {
 			$latest_body = $releases[0]['body'] ?? '';
@@ -113,7 +125,7 @@ function umami_connect_update_page() {
 	}
 
 	echo '<p><b>Current Version:</b> ' . esc_html( $current_version ) . '</p>';
-	if ( $latest_version && $latest_version !== '–' ) {
+	if ( $latest_version && '–' !== $latest_version ) {
 		echo '<p><b>Latest Release:</b> ' . esc_html( $latest_version ) . ' ';
 		echo '<a href="' . esc_url( $github_url ) . '" target="_blank">(Releases on GitHub)</a></p>';
 	} else {
@@ -131,6 +143,11 @@ function umami_connect_update_page() {
 	}
 
 	if ( $latest_body ) {
+		/**
+		 * Simple markdown parser.
+		 *
+		 * @param string $text The text to parse.
+		 */
 		function umami_simple_markdown( $text ) {
 			$text             = preg_replace_callback(
 				'/`([^`]+)`/',
@@ -209,8 +226,10 @@ function umami_connect_update_page() {
 		? '<span style="display:inline-block;background:#f0f0f0;color:#666;border-radius:12px;padding:2px 12px;font-size:13px;font-weight:500;">' . esc_html( $current_version ) . '</span> <span style="color:#999;font-size:14px;margin:0 6px;">→</span> <span style="display:inline-block;background:#007cba;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;font-weight:500;">' . esc_html( $latest_version ) . '</span>'
 		: '<span style="display:inline-block;background:#28a745;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;font-weight:500;">' . esc_html( $current_version ) . '</span> <span style="color:#999;font-size:13px;margin-left:8px;">Current Version</span>';
 		echo '<div style="background:#fff;border:1px solid #e3e3e3;border-radius:8px;padding:0;margin-bottom:24px;max-width:700px;">';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $version_label contains pre-escaped HTML.
 		echo '<div style="background:#f8f8f8;border-bottom:1px solid #e3e3e3;padding:12px 32px 10px 32px;border-radius:8px 8px 0 0;font-weight:600;font-size:16px;display:flex;align-items:center;gap:12px;">Release Notes ' . $version_label . '</div>';
 		echo '<style>.umami-changelog ul { list-style: disc inside; margin-left: 1em; } .umami-changelog li { margin-bottom: 2px; }</style>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- umami_simple_markdown() returns sanitized HTML.
 		echo '<div class="umami-changelog" style="padding:18px 32px 18px 32px;">' . umami_simple_markdown( $latest_body ) . '</div>';
 		echo '</div>';
 	}
@@ -220,11 +239,18 @@ function umami_connect_update_page() {
 		if ( $is_localhost ) {
 			echo '<div style="background:#fff3cd;border:1px solid #ffeeba;border-radius:8px;padding:14px 32px;margin-bottom:24px;max-width:600px;color:#856404;font-weight:500;">Update is disabled during development (localhost:8080).</div>';
 		} else {
+			/**
+			 * Compare two version strings.
+			 *
+			 * @param string $v1 First version.
+			 * @param string $v2 Second version.
+			 * @return int Comparison result.
+			 */
 			function umami_version_compare( $v1, $v2 ) {
 				return version_compare( preg_replace( '/[^0-9.]/', '', $v1 ), preg_replace( '/[^0-9.]/', '', $v2 ) );
 			}
 			$cmp = umami_version_compare( $current_version, $latest_version );
-			if ( $cmp < 0 || $cmp === 0 ) {
+			if ( $cmp < 0 || 0 === $cmp ) {
 				$is_newer = ( $cmp < 0 );
 				$btn_text = $is_newer
 				? 'Update to version ' . esc_html( $latest_version )
@@ -233,7 +259,7 @@ function umami_connect_update_page() {
 				echo '<input type="hidden" name="umami_connect_self_update" value="1">';
 				echo '<input type="hidden" name="umami_update_version" value="' . esc_attr( $latest_version ) . '">';
 				wp_nonce_field( 'umami_connect_self_update', 'umami_connect_self_update_nonce' );
-				echo '<button type="submit" class="button button-primary">' . $btn_text . '</button>';
+				echo '<button type="submit" class="button button-primary">' . esc_html( $btn_text ) . '</button>';
 				echo '</form>';
 			}
 		}

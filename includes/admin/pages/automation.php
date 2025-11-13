@@ -1,4 +1,15 @@
 <?php
+/**
+ * File: automation.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
+/**
+ * Render the automation settings page.
+ */
 function umami_connect_automation_page() {
 	?>
 	<div class="wrap">

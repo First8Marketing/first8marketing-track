@@ -1,24 +1,24 @@
 .umami-tracking-popover .umami-popover-inner {
-    padding: 12px 16px;
-    min-width: 360px;
-    max-width: 520px;
+	padding: 12px 16px;
+	min-width: 360px;
+	max-width: 520px;
 }
 .umami-tracking-popover .umami-popover-header {
-    margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 .umami-tracking-popover .umami-popover-title {
-    font-weight: 600;
-    font-size: 14px;
+	font-weight: 600;
+	font-size: 14px;
 }
 .umami-tracking-popover .umami-popover-section {
-    margin-top: 12px;
+	margin-top: 12px;
 }
 .umami-tracking-popover .umami-pair-row {
-    gap: 8px;
+	gap: 8px;
 }
 .umami-tracking-popover .umami-popover-footer {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 12px;
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-top: 12px;
 }

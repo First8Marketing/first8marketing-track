@@ -79,7 +79,7 @@ Use **conventional commits** for clarity:
 ## Need Help?
 
 - Open an [issue](https://github.com/ceviixx/umami-wp-connect/issues) if you're stuck or have questions
-- Join our [Discord](https://discord.gg/84w4CQU7Jb) for quick help
+- Join our [Discord](https://discord.gg/f46SeUS3jn) for quick help
 
 ---
 

@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: menu.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 add_action(
 	'admin_menu',
 	function () {
@@ -76,6 +84,7 @@ add_action(
 add_action(
 	'admin_init',
 	function () {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Simple redirect based on page parameter.
 		if ( isset( $_GET['page'] ) && sanitize_key( wp_unslash( $_GET['page'] ) ) === 'umami_connect_support' ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=umami_connect_update' ), 301 );
 			exit;
@@ -83,6 +92,9 @@ add_action(
 	}
 );
 
+/**
+ * Add help tabs to the main settings page.
+ */
 function umami_connect_add_help() {
 	$screen = get_current_screen();
 
@@ -119,11 +131,14 @@ function umami_connect_add_help() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
 
+/**
+ * Umami Connect Add Help Self Protection.
+ */
 function umami_connect_add_help_self_protection() {
 	$screen = get_current_screen();
 
@@ -150,11 +165,14 @@ function umami_connect_add_help_self_protection() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
 
+/**
+ * Umami Connect Add Help Automation.
+ */
 function umami_connect_add_help_automation() {
 	$screen = get_current_screen();
 
@@ -185,11 +203,14 @@ function umami_connect_add_help_automation() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
 
+/**
+ * Umami Connect Add Help Events Overview.
+ */
 function umami_connect_add_help_events_overview() {
 	$screen = get_current_screen();
 
@@ -251,11 +272,14 @@ function umami_connect_add_help_events_overview() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
 
+/**
+ * Umami Connect Add Help Update.
+ */
 function umami_connect_add_help_update() {
 	$screen = get_current_screen();
 
@@ -287,11 +311,14 @@ function umami_connect_add_help_update() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs" target="_blank">Umami Documentation</a></p>'
 	);
 }
 
+/**
+ * Umami Connect Add Help Advanced.
+ */
 function umami_connect_add_help_advanced() {
 	$screen = get_current_screen();
 
@@ -300,7 +327,7 @@ function umami_connect_add_help_advanced() {
 	$screen->set_help_sidebar(
 		'<p><strong>Support & Resources</strong></p>' .
 		'<p><a href="https://github.com/ceviixx/umami-wp-connect" target="_blank">GitHub</a></p>' .
-		'<p><a href="https://discord.gg/84w4CQU7Jb" target="_blank">Discord</a></p>' .
+		'<p><a href="https://discord.gg/f46SeUS3jn" target="_blank">Discord</a></p>' .
 		'<p><a href="https://umami.is/docs/tracker-configuration" target="_blank">Tracker configuration</a></p>'
 	);
 
@@ -416,14 +443,14 @@ function umami_connect_add_help_advanced() {
 function umami_connect_add_screen_options_events_overview() {
 	$screen = get_current_screen();
 
-	if ( ! $screen || $screen->id !== 'umami-connect_page_umami_connect_events_overview' ) {
+	if ( ! $screen || 'umami-connect_page_umami_connect_events_overview' !== $screen->id ) {
 		return;
 	}
 
 	add_screen_option(
 		'per_page',
 		array(
-			'label'   => __( 'Events per page', 'umami-connect' ),
+			'label'   => __( 'Events per page', 'first8marketing-track' ),
 			'default' => 20,
 			'option'  => 'events_per_page',
 		)
@@ -436,19 +463,27 @@ function umami_connect_add_screen_options_events_overview() {
 
 /**
  * Define available columns for Events Overview
+ *
+ * @param array $columns The columns array.
+ * @return array
  */
-function umami_connect_events_overview_columns( $columns ) {
+function umami_connect_events_overview_columns( $columns ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- WordPress filter signature.
 	return array(
-		'event'      => __( 'Event', 'umami-connect' ),
-		'post'       => __( 'Post/Page', 'umami-connect' ),
-		'block_type' => __( 'Block Type', 'umami-connect' ),
-		'label'      => __( 'Label/Text', 'umami-connect' ),
-		'data_pairs' => __( 'Data Pairs', 'umami-connect' ),
+		'event'      => __( 'Event', 'first8marketing-track' ),
+		'post'       => __( 'Post/Page', 'first8marketing-track' ),
+		'block_type' => __( 'Block Type', 'first8marketing-track' ),
+		'label'      => __( 'Label/Text', 'first8marketing-track' ),
+		'data_pairs' => __( 'Data Pairs', 'first8marketing-track' ),
 	);
 }
 
 /**
  * Handle screen option saving
+ *
+ * @param mixed  $status The status.
+ * @param string $option The option name.
+ * @param mixed  $value  The option value.
+ * @return mixed
  */
 function umami_connect_set_screen_option( $status, $option, $value ) {
 	if ( 'events_per_page' === $option ) {

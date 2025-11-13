@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: plugin-activation.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Legacy filename.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

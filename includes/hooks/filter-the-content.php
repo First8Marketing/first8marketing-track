@@ -1,4 +1,12 @@
 <?php
+/**
+ * File: filter-the-content.php
+ *
+ * @package First8MarketingTrack
+ *
+ * phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOM API properties use camelCase.
+ */
+
 add_filter(
 	'the_content',
 	function ( $content ) {
@@ -12,7 +20,7 @@ add_filter(
 		if ( ! $autotrack_links && ! $autotrack_buttons ) {
 			return $content;
 		}
-		if ( ! is_string( $content ) || $content === '' ) {
+		if ( ! is_string( $content ) || '' === $content ) {
 			return $content;
 		}
 
@@ -88,9 +96,9 @@ add_filter(
 		$get_own_text = function ( \DOMNode $node ) {
 			$txt = '';
 			foreach ( $node->childNodes as $child ) {
-				if ( $child->nodeType === XML_TEXT_NODE ) {
+				if ( XML_TEXT_NODE === $child->nodeType ) {
 						$txt .= $child->nodeValue;
-				} elseif ( $child->nodeType === XML_CDATA_SECTION_NODE ) {
+				} elseif ( XML_CDATA_SECTION_NODE === $child->nodeType ) {
 					$txt .= $child->data;
 				}
 			}
@@ -124,7 +132,7 @@ add_filter(
 				}
 
 				$text = $get_own_text( $link );
-				if ( $text === '' ) {
+				if ( '' === $text ) {
                  // phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 					$text = trim( preg_replace( '/\s+/u', ' ', $link->textContent ) );
 				}
@@ -134,7 +142,7 @@ add_filter(
 
 				$link->setAttribute( 'data-umami-event', $event_name );
 
-				if ( $href && $href !== '#' && $href !== '' ) {
+				if ( $href && '#' !== $href && '' !== $href ) {
 					$link->setAttribute( 'data-umami-event-url', $href );
 				}
 
