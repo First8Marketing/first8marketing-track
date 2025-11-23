@@ -66,11 +66,15 @@ class Umami_WP_Connect {
 	 * Load required dependencies.
 	 */
 	private function load_dependencies() {
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-persistent-event-queue.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-tracker.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-admin.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-events.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-link-manager.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-link-shortcodes.php';
+
+		// Load queue processor hooks.
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/hooks/process-event-queue.php';
 
 		// Load WooCommerce integration if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
@@ -126,6 +130,11 @@ class Umami_WP_Connect {
 	 * Plugin activation.
 	 */
 	public function activate() {
+		// Create persistent event queue table.
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-persistent-event-queue.php';
+		$queue = new Persistent_Event_Queue();
+		$queue->create_table();
+
 		// Set default options.
 		$default_options = array(
 			'umami_website_id'       => '',
@@ -146,6 +155,16 @@ class Umami_WP_Connect {
 			}
 		}
 
+		// Schedule event queue processing (runs every 5 minutes).
+		if ( ! wp_next_scheduled( 'umami_process_event_queue' ) ) {
+			wp_schedule_event( time(), 'umami_queue_interval', 'umami_process_event_queue' );
+		}
+
+		// Schedule queue cleanup (runs daily).
+		if ( ! wp_next_scheduled( 'umami_cleanup_event_queue' ) ) {
+			wp_schedule_event( time(), 'daily', 'umami_cleanup_event_queue' );
+		}
+
 		// Flush rewrite rules.
 		flush_rewrite_rules();
 	}
@@ -154,6 +173,17 @@ class Umami_WP_Connect {
 	 * Plugin deactivation.
 	 */
 	public function deactivate() {
+		// Clear scheduled events.
+		$timestamp = wp_next_scheduled( 'umami_process_event_queue' );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, 'umami_process_event_queue' );
+		}
+
+		$timestamp = wp_next_scheduled( 'umami_cleanup_event_queue' );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, 'umami_cleanup_event_queue' );
+		}
+
 		// Flush rewrite rules.
 		flush_rewrite_rules();
 	}

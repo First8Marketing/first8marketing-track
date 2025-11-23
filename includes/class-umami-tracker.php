@@ -171,27 +171,31 @@ class Umami_Tracker {
 	}
 
 	/**
-	 * Queue event for batch sending
+	 * Queue event for persistent batch sending
+	 *
+	 * Uses database-backed persistent queue instead of transients to prevent data loss.
+	 * Events are guaranteed to be processed even if server restarts or caches clear.
 	 *
 	 * @param string $event_name Event name.
 	 * @param array  $event_data Event data.
+	 * @return bool True if queued successfully, false on failure.
 	 */
 	private function queue_event( $event_name, $event_data ) {
-		// Get current queue.
-		$queue = get_transient( 'umami_event_queue' );
-		if ( false === $queue ) {
-			$queue = array();
+		// Use persistent database-backed queue to prevent data loss.
+		$queue = new Persistent_Event_Queue();
+		
+		// Add event to persistent queue.
+		$event_id = $queue->enqueue( $event_name, $event_data );
+		
+		if ( false === $event_id ) {
+			error_log( '[Umami Tracker] Failed to enqueue event: ' . $event_name );
+			return false;
 		}
-
-		// Add event to queue.
-		$queue[] = array(
-			'name'      => $event_name,
-			'data'      => $event_data,
-			'timestamp' => time(),
-		);
-
-		// Save queue (expires in 5 minutes).
-		set_transient( 'umami_event_queue', $queue, 300 );
+		
+		// Log successful queueing for monitoring.
+		error_log( "[Umami Tracker] Event queued successfully: {$event_name} (ID: {$event_id})" );
+		
+		return true;
 	}
 }
 

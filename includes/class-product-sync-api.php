@@ -13,6 +13,9 @@ namespace First8Marketing\Track;
 
 defined( 'ABSPATH' ) || exit;
 
+// Load encryption helper
+require_once plugin_dir_path( __FILE__ ) . 'class-encryption-helper.php';
+
 /**
  * Product Sync API Class
  *
@@ -107,13 +110,31 @@ class Product_Sync_API {
 			return false;
 		}
 
-		// Get stored API key from settings
-		$stored_key = get_option( 'f8m_track_api_key', '' );
+		// Get encrypted API key from settings
+		$encrypted_key = get_option( 'f8m_track_api_key_encrypted', '' );
 
+		if ( empty( $encrypted_key ) ) {
+			// Migrate plain text key if it exists
+			$plain_key = get_option( 'f8m_track_api_key', '' );
+			if ( ! empty( $plain_key ) ) {
+				// Encrypt and migrate
+				$encrypted_key = Encryption_Helper::encrypt( $plain_key );
+				update_option( 'f8m_track_api_key_encrypted', $encrypted_key );
+				delete_option( 'f8m_track_api_key' ); // Remove plain text version
+			} else {
+				// Generate new API key
+				$new_key = wp_generate_password( 32, false );
+				$encrypted_key = Encryption_Helper::encrypt( $new_key );
+				update_option( 'f8m_track_api_key_encrypted', $encrypted_key );
+			}
+		}
+
+		// Decrypt stored key for comparison
+		$stored_key = Encryption_Helper::decrypt( $encrypted_key );
+		
 		if ( empty( $stored_key ) ) {
-			// Generate API key if not exists
-			$stored_key = wp_generate_password( 32, false );
-			update_option( 'f8m_track_api_key', $stored_key );
+			error_log( 'First8Marketing: Failed to decrypt API key' );
+			return false;
 		}
 
 		return hash_equals( $stored_key, $api_key );

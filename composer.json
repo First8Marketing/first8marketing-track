@@ -1,0 +1,40 @@
+{
+    "name": "first8marketing/track-plugin",
+    "description": "Umami analytics and link management for WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "brain/monkey": "^2.6",
+        "mockery/mockery": "^1.6",
+        "yoast/phpunit-polyfills": "^2.0"
+    },
+    "autoload": {
+        "classmap": [
+            "includes/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "First8Marketing\\Track\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html coverage/html --coverage-clover coverage/clover.xml",
+        "test:unit": "phpunit --testsuite='Unit Tests'",
+        "test:watch": "phpunit --watch"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
