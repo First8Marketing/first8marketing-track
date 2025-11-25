@@ -72,6 +72,8 @@ class Umami_WP_Connect {
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-events.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-link-manager.php';
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-link-shortcodes.php';
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-encryption-helper.php';
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-email-tracker.php';
 
 		// Load queue processor hooks.
 		require_once UMAMI_WP_PLUGIN_DIR . 'includes/hooks/process-event-queue.php';
@@ -79,6 +81,12 @@ class Umami_WP_Connect {
 		// Load WooCommerce integration if WooCommerce is active.
 		if ( class_exists( 'WooCommerce' ) ) {
 			require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-umami-woocommerce.php';
+		}
+
+		// Load admin pages.
+		if ( is_admin() ) {
+			require_once UMAMI_WP_PLUGIN_DIR . 'includes/admin/pages/email-tracking.php';
+			require_once UMAMI_WP_PLUGIN_DIR . 'includes/admin/class-email-tracking-settings.php';
 		}
 	}
 
@@ -104,6 +112,9 @@ class Umami_WP_Connect {
 		// Initialize admin.
 		if ( is_admin() ) {
 			Umami_Admin::get_instance();
+			
+			// Initialize email tracking admin page.
+			new \First8Marketing\Track\Admin\Email_Tracking_Page();
 		}
 
 		// Initialize event tracking.
@@ -122,6 +133,9 @@ class Umami_WP_Connect {
 		$link_shortcodes = new \First8Marketing\Track\Link_Shortcodes();
 		$link_shortcodes->init();
 
+		// Initialize email tracker.
+		$email_tracker = \First8Marketing\Track\Email_Tracker::get_instance();
+
 		do_action( 'umami_wp_connect_init' );
 	}
 
@@ -135,6 +149,12 @@ class Umami_WP_Connect {
 		$queue = new Persistent_Event_Queue();
 		$queue->create_table();
 
+		// Create email tracking tables.
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-encryption-helper.php';
+		require_once UMAMI_WP_PLUGIN_DIR . 'includes/class-email-tracker.php';
+		$email_tracker = \First8Marketing\Track\Email_Tracker::get_instance();
+		$email_tracker->install_tables();
+
 		// Set default options.
 		$default_options = array(
 			'umami_website_id'       => '',
@@ -147,6 +167,8 @@ class Umami_WP_Connect {
 			'enable_form_tracking'   => true,
 			'enable_click_tracking'  => true,
 			'enable_scroll_tracking' => true,
+			'f8m_email_tracking_enabled' => true,
+			'f8m_tenant_id'          => 'default',
 		);
 
 		foreach ( $default_options as $key => $value ) {
@@ -165,7 +187,7 @@ class Umami_WP_Connect {
 			wp_schedule_event( time(), 'daily', 'umami_cleanup_event_queue' );
 		}
 
-		// Flush rewrite rules.
+		// Flush rewrite rules for email tracking endpoints.
 		flush_rewrite_rules();
 	}
 
