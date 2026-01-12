@@ -75,20 +75,35 @@ class Umami_Events {
 		?>
 		<script>
 		(function() {
-			// Track form submissions.
-			document.addEventListener('submit', function(e) {
-				if (e.target.tagName === 'FORM') {
-					var formId = e.target.id || 'unknown';
-					var formAction = e.target.action || window.location.href;
-					
-					if (typeof umami !== 'undefined') {
-						umami.track('form_submit', {
-							form_id: formId,
-							form_action: formAction
-						});
-					}
+			// Wait for umami to be available
+			var checkUmami = function() {
+				if (typeof umami !== 'undefined') {
+					// Track form submissions
+					document.addEventListener('submit', function(e) {
+						if (e.target.tagName === 'FORM') {
+							try {
+								var formData = {
+									form_id: e.target.id || 'unknown',
+									form_action: e.target.action || window.location.href
+								};
+								umami.track('form_submit', formData);
+							} catch (error) {
+								console.error('Umami form tracking error:', error);
+							}
+						}
+					}, true);
+				} else {
+					// Retry after 100ms if umami not yet loaded
+					setTimeout(checkUmami, 100);
 				}
-			}, true);
+			};
+			
+			// Start checking when DOM is ready
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', checkUmami);
+			} else {
+				checkUmami();
+			}
 		})();
 		</script>
 		<?php

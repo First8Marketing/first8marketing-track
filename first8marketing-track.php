@@ -88,6 +88,12 @@ class Umami_WP_Connect {
 
 		// Initialize components.
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
+
+		// Register custom cron schedule.
+		add_filter( 'cron_schedules', array( $this, 'add_cron_schedules' ) );
+
+		// Hook cron action to send events.
+		add_action( 'umami_track_send_events', array( $this, 'send_queued_events_cron' ) );
 	}
 
 	/**
@@ -123,6 +129,34 @@ class Umami_WP_Connect {
 
 
 	/**
+	 * Add custom cron schedules
+	 *
+	 * @param array $schedules Existing schedules.
+	 * @return array Modified schedules
+	 */
+	public function add_cron_schedules( $schedules ) {
+		$schedules['umami_five_minutes'] = array(
+			'interval' => 300, // 5 minutes in seconds.
+			'display'  => __( 'Every 5 Minutes', 'first8marketing-track' ),
+		);
+		return $schedules;
+	}
+
+	/**
+	 * Cron callback to send queued events
+	 */
+	public function send_queued_events_cron() {
+		error_log( '[Umami Track] Cron job triggered to send queued events' );
+		$tracker = Umami_Tracker::get_instance();
+		$results = $tracker->send_queued_events();
+		error_log( sprintf(
+			'[Umami Track] Cron job complete: %d events sent, %d errors',
+			$results['success_count'],
+			$results['error_count']
+		) );
+	}
+
+	/**
 	 * Plugin activation.
 	 */
 	public function activate() {
@@ -146,6 +180,12 @@ class Umami_WP_Connect {
 			}
 		}
 
+		// Schedule cron event if not already scheduled.
+		if ( ! wp_next_scheduled( 'umami_track_send_events' ) ) {
+			wp_schedule_event( time(), 'umami_five_minutes', 'umami_track_send_events' );
+			error_log( '[Umami Track] Scheduled cron job for event transmission' );
+		}
+
 		// Flush rewrite rules.
 		flush_rewrite_rules();
 	}
@@ -154,6 +194,13 @@ class Umami_WP_Connect {
 	 * Plugin deactivation.
 	 */
 	public function deactivate() {
+		// Clear scheduled cron event.
+		$timestamp = wp_next_scheduled( 'umami_track_send_events' );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, 'umami_track_send_events' );
+			error_log( '[Umami Track] Unscheduled cron job' );
+		}
+
 		// Flush rewrite rules.
 		flush_rewrite_rules();
 	}
